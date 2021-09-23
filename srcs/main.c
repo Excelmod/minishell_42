@@ -6,11 +6,11 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/23 19:07:00 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/23 22:52:45 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 char	**ft_freetabs(char **t)
 {
@@ -50,11 +50,11 @@ char	**new_env(t_shell *sh, char **ap, char *str)
 
 void	initialization_shell(t_shell *shell, char **av, char **ap)
 {
-	pipex->ap = new_env(shell, ap, NULL);
-	pipex->path = ft_split(search_env(pipex->ap, "PATH") + 5, ':');
-	if (!(pipex->path))
+	shell->ap = new_env(shell, ap, NULL);
+	shell->path = ft_split(search_env(shell->ap, "PATH") + 5, ':');
+	if (!(shell->path))
 	{
-		perror("pipex");
+		perror("shell");
 		exit(0);
 	}
 }
@@ -65,13 +65,12 @@ int	main(int ac, char **av, char **ap)
 
 	sh = NULL;
 	sh = malloc(sizeof(t_shell));
-	if (pipex == NULL)
+	if (shell == NULL)
 	{
-		perror("pipex");
+		perror("shell");
 		exit(0);
 	}
 	initialization_shell(sh, av, ap);
-	exec_pipe(pipex);
-	exit_free(pipex);
+	exit_free(shell);
 	return (0);
 }
