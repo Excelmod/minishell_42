@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cmd.c                                         :+:      :+:    :+:   */
+/*   search_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/22 00:44:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/23 19:16:31 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/25 00:47:56 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,6 @@ void	search_cmd(t_shell *shell, char *cmd)
 
 	i = 0;
 	shell->cmd = NULL;
-	if (check_path(shell, ".", cmd))
-		return ;
-	if (check_path(shell, "/bin", cmd))
-		return ;
 	while (shell->path[i])
 	{
 		if (check_path(shell, shell->path[i], cmd))
