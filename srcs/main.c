@@ -6,27 +6,11 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/24 22:14:08 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/26 17:05:02 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	**ft_freetabs(char **t)
-{
-	int	i;
-
-	i = 0;
-	while (t[i] != NULL)
-	{
-		free(t[i]);
-		t[i] = NULL;
-		i++;
-	}
-	free(t);
-	t = NULL;
-	return (NULL);
-}
 
 char	**new_env(t_shell *sh, char **ap, char *str)
 {
@@ -51,6 +35,7 @@ char	**new_env(t_shell *sh, char **ap, char *str)
 void	initialization_shell(t_shell *shell, char **av, char **ap)
 {
 	shell->ap = new_env(shell, ap, NULL);
+	shell->tokens = NULL;
 	shell->path = ft_split(search_env(shell->ap, "PATH") + 5, ':');
 	if (!(shell->path))
 	{

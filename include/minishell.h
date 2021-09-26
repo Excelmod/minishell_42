@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/24 23:51:15 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/26 17:05:53 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 enum types 
 {
 	ERROR,
-	SPACE,
 	CMD,
 	TRUNC,
 	APPEND,
@@ -52,11 +51,12 @@ typedef struct s_shell
 	t_token	*tokens;
 }	t_shell;
 
-int			check_path(t_pipex *pipex, char *path, char *cmd);
-void		exec_cmd(t_pipex *pipex, char **arg);
+int			check_path(t_shell *shell, char *path, char *cmd);
+void		search_cmd(t_shell *shell, char *cmd);
 char		**ft_freetabs(char **t);
 char		*search_env(char **env, char *search);
 char 		*cur_dir_name(void);
 void    	handle_prompt(void);
+void		exit_free(t_shell *shell);
 
 #endif
