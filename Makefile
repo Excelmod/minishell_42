@@ -4,7 +4,7 @@
 NAME = minishell
 
 # Create a list of *.c sources in DIRS
-SOURCES = srcs/main.c srcs/search_cmd.c srcs/prompt.c srcs/check_path.c
+SOURCES = srcs/check_path.c srcs/get_next_line.c srcs/parsing.c srcs/search_cmd.c srcs/exit_free.c srcs/main.c srcs/prompt.c srcs/tokenizer.c srcs/token_utils.c
 
 # Define objects for all sources
 OBJS = $(SOURCES:.c=.o)
@@ -26,7 +26,7 @@ libft.a :
 	cd libft && $(MAKE) && mv libft.a ../
 
 $(NAME): $(OBJS)
-	$(CC) -o $@ $(OBJS) libft.a
+	$(CC) -g3 -fsanitize=address -o $@ $(OBJS) libft.a
 
 # Remove all objects, dependencies and executable files generated during the build
 clean:

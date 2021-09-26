@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:50:00 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/26 17:03:46 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/26 18:12:22 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_tokenclear(t_token **lst)
 	t_token	*pnt1;
 	t_token	*pnt2;
 
-	if (!lst || !del)
+	if (!lst)
 		return ;
 	pnt1 = *lst;
 	pnt2 = pnt1;
@@ -53,4 +53,11 @@ void	exit_free(t_shell *shell)
 	shell->path = ft_freetabs(shell->path);
 	shell->env = ft_freetabs(shell->env);
 	free(shell);
+	exit(0);
+}
+
+void	exit_message_error(t_shell *shell, char *msg)
+{
+	ft_putendl_fd(msg, 2);
+	exit_free(shell);
 }

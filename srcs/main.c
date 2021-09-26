@@ -6,13 +6,15 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/26 17:05:02 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/26 18:39:37 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**new_env(t_shell *sh, char **ap, char *str)
+char *type_str[7] = {"ERROR", "CMD", "TRUNC", "APPEND", "HEREDOC", "INPUT", "PIPE"};
+
+char	**new_env(char **ap, char *str)
 {
 	int i;
 	char **new;
@@ -22,25 +24,49 @@ char	**new_env(t_shell *sh, char **ap, char *str)
 		i++;
 	if (str)
 		i++;
-	malloc(sizeof(char *) * i + 1);
+	new = malloc(sizeof(char *) * i + 1);
 	i = 0;
 	while (ap[i] != NULL)
-		new[i] = f_strdup(ap[i++]);
+	{
+		new[i] = ft_strdup(ap[i]);
+		i++;
+	}
 	if (str)
-		new[i++] = f_strdup(str);
+		new[i++] = ft_strdup(str);
 	new[i] = NULL;
 	return (new);
 }
 
-void	initialization_shell(t_shell *shell, char **av, char **ap)
+void	initialization_shell(t_shell *shell, char **ap)
 {
-	shell->ap = new_env(shell, ap, NULL);
+	shell->env = new_env(ap, NULL);
 	shell->tokens = NULL;
-	shell->path = ft_split(search_env(shell->ap, "PATH") + 5, ':');
+	shell->path = ft_split(search_env(shell->env, "PATH") + 5, ':');
 	if (!(shell->path))
 	{
 		perror("shell");
 		exit(0);
+	}
+}
+
+void	loop(t_shell *shell)
+{
+	char *line;
+	t_token *lst;
+
+	line = NULL;
+	while(get_next_line(0, &line))
+	{
+		tokenizer(shell, line);
+		lst = shell->tokens;
+		while(lst)
+		{
+			printf("le type est %s et la ligne est :%s\n", type_str[(int)(lst->type)], lst->line);
+			lst = lst->next;
+		}
+		ft_tokenclear(&(shell->tokens));
+		free(line);
+		line = NULL;
 	}
 }
 
@@ -49,13 +75,16 @@ int	main(int ac, char **av, char **ap)
 	t_shell	*sh;
 
 	sh = NULL;
+	ac = 0;
+	av = 0;
 	sh = malloc(sizeof(t_shell));
-	if (shell == NULL)
+	if (sh == NULL)
 	{
 		perror("shell");
 		exit(0);
 	}
-	initialization_shell(sh, av, ap);
-	exit_free(shell);
+	initialization_shell(sh, ap);
+	loop(sh);
+	exit_free(sh);
 	return (0);
 }
