@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:50:00 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/27 22:01:47 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/27 22:41:40 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,11 @@ void	exit_free(t_shell *shell)
 	shell->env = ft_freetabs(shell->env);
 	free(shell);
 	exit(0);
+}
+
+void	message_error(char *msg)
+{
+	ft_putendl_fd(msg, 2);
 }
 
 void	exit_message_error(t_shell *shell, char *msg)

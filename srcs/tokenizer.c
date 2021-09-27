@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 22:11:23 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/27 22:01:22 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/27 22:45:38 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ char    *expand_var_quote(t_shell *shell, int *ind, char *str, char *l)
     return(l);
 }
 
-void    tokenizer_text(t_shell *shell, int *ind, char *str)
+int    tokenizer_text(t_shell *shell, int *ind, char *str)
 {
     int     i;
     char    *l;
@@ -146,7 +146,7 @@ void    tokenizer_text(t_shell *shell, int *ind, char *str)
              if (str[i] == 0)
             {
                 free(l);
-                exit_message_error(shell, "Minishell: Syntax error");
+                return(1);
             }
             l = ft_strjoin_part(l, str + *ind, i - *ind);
             i++;
@@ -162,7 +162,7 @@ void    tokenizer_text(t_shell *shell, int *ind, char *str)
             if (str[i] == 0)
             {
                 free(l);
-                exit_message_error(shell, "Minishell: Syntax error");
+                return(1);
             }
             l = ft_strjoin_part(l, str + *ind, i - *ind);
             i++;
@@ -175,7 +175,7 @@ void    tokenizer_text(t_shell *shell, int *ind, char *str)
                 l = ft_strjoin_part(l, str + *ind, (i + 1) - *ind);
                 *ind = i + 1;
                 ft_token_add_back(&(shell->tokens), ft_tokennew(TEXT, l));
-                return ;
+                return(0);
             }
             l = ft_strjoin_part(l, str + *ind, i - *ind);
             i++;
@@ -190,6 +190,7 @@ void    tokenizer_text(t_shell *shell, int *ind, char *str)
     i++;
     *ind = i;
     ft_token_add_back(&(shell->tokens), ft_tokennew(TEXT, l));
+    return(0);
 }
 
 void tokenizer_redir_in(t_shell *shell, int *ind, char *str)
@@ -218,10 +219,12 @@ void tokenizer_redir_out(t_shell *shell, int *ind, char *str)
 
 void    tokenizer(t_shell *shell, char *line)
 {
-    int i;    
+    int i;
+    int error;
 
     i = 0;
-    while (line[i])
+    error = 0;
+    while (line[i] && !error)
     {
         while(line[i] == ' ' || line[i] == '\t')
             i++;
@@ -236,7 +239,7 @@ void    tokenizer(t_shell *shell, char *line)
             tokenizer_redir_in(shell, &i, line);
         else if(line[i])
         {
-            tokenizer_text(shell, &i, line);
+            error = tokenizer_text(shell, &i, line);
         }        
     }
 }

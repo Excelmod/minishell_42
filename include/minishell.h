@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/27 20:53:40 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/27 22:41:47 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,5 @@ t_token		*ft_tokennew(enum types type, char *line);
 void		ft_token_add_back(t_token **atoken, t_token *new);
 t_token		*ft_tokenlast(t_token *token);
 char		*env_value(char **env, char *search);
+void		message_error(char *msg);
 #endif
