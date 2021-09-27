@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 17:28:17 by user42            #+#    #+#             */
-/*   Updated: 2021/09/23 19:14:54 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/27 19:18:51 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,20 @@ char	*search_env(char **env, char *search)
 		i++;
 	}
 	return (0);
+}
+
+char	*env_value(char **env, char *search)
+{
+	int i;
+	char *l;
+	char *str;
+	
+	i = 0;
+	l = search_env(env, search);
+	while (l[i] != '=')
+		i++;
+	str = ft_strdup(l[i + 1]);
+	return (str);
 }
 
 char	*path_join(char *s1, char *s2)

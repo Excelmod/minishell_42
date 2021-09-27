@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/26 18:02:46 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/27 19:19:20 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 enum types 
 {
 	ERROR,
-	CMD,
+	TEXT,
 	TRUNC,
 	APPEND,
 	HEREDOC,
@@ -67,4 +67,5 @@ int			get_next_line(int fd, char** line);
 t_token		*ft_tokennew(enum types type, char *line);
 void		ft_token_add_back(t_token **atoken, t_token *new);
 t_token		*ft_tokenlast(t_token *token);
+char		*env_value(char **env, char *search);
 #endif

@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 16:24:41 by ljulien           #+#    #+#             */
-/*   Updated: 2021/05/05 16:26:55 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/26 22:47:07 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ char *cur_dir_name(void)
     int     size;
     char    *buf;
 
-    size = 30;
+    size = 50;
     buf = malloc(sizeof(char) * size);
     while(getcwd(buf, size) == NULL)
     {
-        size += 30;
+        size += 50;
         free(buf);
         buf = malloc(sizeof(char) * size);
     }

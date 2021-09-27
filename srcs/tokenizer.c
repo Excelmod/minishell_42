@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 22:11:23 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/26 18:39:17 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/27 20:16:18 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,103 @@ char    *ft_strjoin_part(char *s1, char *spart, int l)
 	return (dest);
 }
 
-char    *tokenizer_text(t_shell *shell, int *ind, char *str)
+void    sub_expand_var(t_shell *shell, char *str, char *l)
+{
+    char    **tab;
+    int     i;
+
+    tab = NULL;
+    tab = ft_split(value, ' ');
+    if (!tab || tab[0] == NULL)
+    {
+        free(tab);
+        return;
+    }
+    l = ft_strjoin_part(l, tab[0], ft_strlen(tab[0]));
+    i = 1;
+    while (tab[i])
+    {
+        ft_token_add_back(&(shell->tokens), ft_tokennew(TEXT, l));
+        l = ft_strdup(tab[i];)
+        i++;
+    }
+    free_tab(tab);
+}
+
+void    expand_var(t_shell *shell, int *ind, char *str, char *l)
+{
+    int     i;
+    char    *env;
+    char    *value;
+
+    (*ind)++;
+    i = *ind;
+    if (ft_isdigit(str[*ind]))
+    {
+        (*ind)++;
+        return ;
+    }
+    else if (ft_isalpha(str[*ind]) == 0)
+        return ;
+    while (ft_isalnum(str[i]) || str[i] == '_')
+        i++;
+    env = ft_strlcpy(malloc(sizeof(char) * ((i - *ind) + 1), str + *ind, (i - *ind) + 1);
+    value = env_value(shell->env, env);
+    free(env);
+    *ind = i;
+    sub_expand_var(shell, value, l);
+    free(value);
+}
+
+void    sub_expand_var(t_shell *shell, char *str, char *l)
+{
+    char    **tab;
+    int     i;
+
+    tab = NULL;
+    tab = ft_split(value, ' ');
+    if (!tab || tab[0] == NULL)
+    {
+        free(tab);
+        return;
+    }
+    l = ft_strjoin_part(l, tab[0], ft_strlen(tab[0]));
+    i = 1;
+    while (tab[i])
+    {
+        ft_token_add_back(&(shell->tokens), ft_tokennew(TEXT, l));
+        l = ft_strdup(tab[i];)
+        i++;
+    }
+    free_tab(tab);
+}
+
+void    expand_var_quote(t_shell *shell, int *ind, char *str, char *l)
+{
+    int     i;
+    char    *env;
+    char    *value;
+
+    (*ind)++;
+    i = *ind;
+    if (ft_isdigit(str[*ind]))
+    {
+        (*ind)++;
+        return ;
+    }
+    else if (ft_isalpha(str[*ind]) == 0)
+        return ;
+    while (ft_isalnum(str[i]) || str[i] == '_')
+        i++;
+    env = ft_strlcpy(malloc(sizeof(char) * ((i - *ind) + 1), str + *ind, (i - *ind) + 1);
+    value = env_value(shell->env, env);
+    free(env);
+    *ind = i;
+    l = ft_strjoin_part(l, value, ft_strlen(value));
+    free(value);
+}
+
+void    tokenizer_text(t_shell *shell, int *ind, char *str)
 {
     int     i;
     char    *l;
@@ -50,7 +146,12 @@ char    *tokenizer_text(t_shell *shell, int *ind, char *str)
             *ind = i;
             while(str[i] && str[i] != '\"')
             {
-
+                if (str[i] == '$')
+                {
+                    l = ft_strjoin_part(l, str + *ind, i - *ind);
+                    *ind = i;
+                    expand_var_quote(shell, ind, str, l);
+                }
                 i++;
             }
              if (str[i] == 0)
@@ -78,6 +179,19 @@ char    *tokenizer_text(t_shell *shell, int *ind, char *str)
             i++;
             *ind = i;
         }
+        else if (str[i] == '$')
+        {
+            if (ft_isset(" \t<>|", str[i + 1])))
+            {
+                l = ft_strjoin_part(l, str + *ind, (i + 1) - *ind);
+                *ind = i + 1;
+                ft_token_add_back(&(shell->tokens), ft_tokennew(TEXT, l));
+                return ;
+            }
+            l = ft_strjoin_part(l, str + *ind, i - *ind);
+            *ind = i;
+            expand_var(shell, ind, str, l);
+        }
         else
             i++;
     }
@@ -85,60 +199,31 @@ char    *tokenizer_text(t_shell *shell, int *ind, char *str)
     l = ft_strjoin_part(l, str + *ind, i - *ind);
     i++;
     *ind = i;
-    return (l);
+    ft_token_add_back(&(shell->tokens), ft_tokennew(TEXT, l));
 }
 
 void tokenizer_redir_in(t_shell *shell, int *ind, char *str)
 {
-    (*ind)++;
-    if (str[*ind] == '<')
+   if (str[*ind + 1] == '<')
     {
+        ft_token_add_back(&(shell->tokens), ft_tokennew(HEREDOC, NULL));
         (*ind)++;
-        if (ft_isset("<>|",str[*ind]))
-            exit_message_error(shell, "Minishell: Syntax error");
-        while(str[*ind] == ' ' || str[*ind] == '\t')
-            (*ind)++;
-        if (ft_isset("<>|",str[*ind]))
-            exit_message_error(shell, "Minishell: Syntax error");
-        ft_token_add_back(&(shell->tokens), ft_tokennew(HEREDOC, tokenizer_text(shell, ind, str)));
-    }
-    else if (!(ft_isset(">|",str[*ind])))
-    {
-        while(str[*ind] == ' ' || str[*ind] == '\t')
-            (*ind)++;
-        if (ft_isset("<>|",str[*ind]))
-            exit_message_error(shell, "Minishell: Syntax error");
-        ft_token_add_back(&(shell->tokens), ft_tokennew(INPUT, tokenizer_text(shell, ind, str)));
     }
     else
-        exit_message_error(shell, "Minishell: Syntax error");
+        ft_token_add_back(&(shell->tokens), ft_tokennew(INPUT, NULL));
+    (*ind)++
 }
 
 void tokenizer_redir_out(t_shell *shell, int *ind, char *str)
 {
-    (*ind)++;
-    if (str[*ind] == '>')
+    if (str[*ind + 1] == '>')
     {
+        ft_token_add_back(&(shell->tokens), ft_tokennew(APPEND, NULL));
         (*ind)++;
-        if (ft_isset("<>|",str[*ind]))
-            exit_message_error(shell, "Minishell: Syntax error");
-        while(str[*ind] == ' ' || str[*ind] == '\t')
-            (*ind)++;
-        if (ft_isset("<>|",str[*ind]))
-            exit_message_error(shell, "Minishell: Syntax error");
-        ft_token_add_back(&(shell->tokens), ft_tokennew(APPEND, tokenizer_text(shell, ind, str)));
-    }
-    else if (!(ft_isset("<|",str[*ind])))
-    {
-        while(str[*ind] == ' ' || str[*ind] == '\t')
-            (*ind)++;
-        if (ft_isset("<>|",str[*ind]))
-            exit_message_error(shell, "Minishell: Syntax error");
-        ft_token_add_back(&(shell->tokens), ft_tokennew(TRUNC, tokenizer_text(shell, ind, str)));
     }
     else
-        exit_message_error(shell, "Minishell: Syntax error");
-    return ;
+        ft_token_add_back(&(shell->tokens), ft_tokennew(TRUNC, NULL));
+    (*ind)++
 }
 
 void    tokenizer(t_shell *shell, char *line)
@@ -161,7 +246,7 @@ void    tokenizer(t_shell *shell, char *line)
             tokenizer_redir_in(shell, &i, line);
         else if(line[i])
         {
-            ft_token_add_back(&(shell->tokens), ft_tokennew(CMD, tokenizer_text(shell, &i, line)));
+            tokenizer_text(shell, &i, line)));
         }        
     }
 }
