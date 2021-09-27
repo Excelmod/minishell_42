@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 22:11:23 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/27 20:16:18 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/27 22:01:22 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,30 +34,62 @@ char    *ft_strjoin_part(char *s1, char *spart, int l)
 	return (dest);
 }
 
-void    sub_expand_var(t_shell *shell, char *str, char *l)
+char   *sub_expand_var(t_shell *shell, char *str, char *l)
 {
     char    **tab;
     int     i;
 
     tab = NULL;
-    tab = ft_split(value, ' ');
+    tab = ft_split(str, ' ');
     if (!tab || tab[0] == NULL)
     {
         free(tab);
-        return;
+        return(l);
     }
     l = ft_strjoin_part(l, tab[0], ft_strlen(tab[0]));
     i = 1;
     while (tab[i])
     {
         ft_token_add_back(&(shell->tokens), ft_tokennew(TEXT, l));
-        l = ft_strdup(tab[i];)
+        l = ft_strdup(tab[i]);
         i++;
     }
-    free_tab(tab);
+    ft_freetabs(tab);
+    return(l);
 }
 
-void    expand_var(t_shell *shell, int *ind, char *str, char *l)
+char    *expand_var(t_shell *shell, int *ind, char *str, char *l)
+{
+    int     i;
+    char    *env;
+    char    *value;
+
+    i = *ind;
+    printf("la phrase est %s\n", str + *ind);
+    if (ft_isdigit(str[*ind]))
+    {
+        (*ind)++;
+        return(l);
+    }
+    else if (ft_isalpha(str[*ind]) == 0)
+        return(l);
+    while (ft_isalnum(str[i]) || str[i] == '_')
+        i++;
+    env = malloc(sizeof(char) * ((i - *ind) + 1));
+    ft_strlcpy(env, str + *ind, (i - *ind) + 1);
+    printf("la phrase ENV est %s\n", env);
+    value = env_value(shell->env, env);
+    printf("la phrase VALUE est %s\n", value);
+    free(env);
+    *ind = i;
+    if (value)
+        l = sub_expand_var(shell, value, l);
+    printf("la phrase VALUE est %s\n", l);
+    free(value);
+    return(l);
+}
+
+char    *expand_var_quote(t_shell *shell, int *ind, char *str, char *l)
 {
     int     i;
     char    *env;
@@ -68,66 +100,21 @@ void    expand_var(t_shell *shell, int *ind, char *str, char *l)
     if (ft_isdigit(str[*ind]))
     {
         (*ind)++;
-        return ;
+        return(l);
     }
     else if (ft_isalpha(str[*ind]) == 0)
-        return ;
+        return(l);
     while (ft_isalnum(str[i]) || str[i] == '_')
         i++;
-    env = ft_strlcpy(malloc(sizeof(char) * ((i - *ind) + 1), str + *ind, (i - *ind) + 1);
+    env = malloc(sizeof(char) * ((i - *ind) + 1));
+    ft_strlcpy(env, str + *ind, (i - *ind) + 1);
     value = env_value(shell->env, env);
     free(env);
     *ind = i;
-    sub_expand_var(shell, value, l);
+    if (value)
+        l = ft_strjoin_part(l, value, ft_strlen(value));
     free(value);
-}
-
-void    sub_expand_var(t_shell *shell, char *str, char *l)
-{
-    char    **tab;
-    int     i;
-
-    tab = NULL;
-    tab = ft_split(value, ' ');
-    if (!tab || tab[0] == NULL)
-    {
-        free(tab);
-        return;
-    }
-    l = ft_strjoin_part(l, tab[0], ft_strlen(tab[0]));
-    i = 1;
-    while (tab[i])
-    {
-        ft_token_add_back(&(shell->tokens), ft_tokennew(TEXT, l));
-        l = ft_strdup(tab[i];)
-        i++;
-    }
-    free_tab(tab);
-}
-
-void    expand_var_quote(t_shell *shell, int *ind, char *str, char *l)
-{
-    int     i;
-    char    *env;
-    char    *value;
-
-    (*ind)++;
-    i = *ind;
-    if (ft_isdigit(str[*ind]))
-    {
-        (*ind)++;
-        return ;
-    }
-    else if (ft_isalpha(str[*ind]) == 0)
-        return ;
-    while (ft_isalnum(str[i]) || str[i] == '_')
-        i++;
-    env = ft_strlcpy(malloc(sizeof(char) * ((i - *ind) + 1), str + *ind, (i - *ind) + 1);
-    value = env_value(shell->env, env);
-    free(env);
-    *ind = i;
-    l = ft_strjoin_part(l, value, ft_strlen(value));
-    free(value);
+    return(l);
 }
 
 void    tokenizer_text(t_shell *shell, int *ind, char *str)
@@ -150,9 +137,11 @@ void    tokenizer_text(t_shell *shell, int *ind, char *str)
                 {
                     l = ft_strjoin_part(l, str + *ind, i - *ind);
                     *ind = i;
-                    expand_var_quote(shell, ind, str, l);
+                    l = expand_var_quote(shell, ind, str, l);
+                    i = *ind;
                 }
-                i++;
+                else
+                    i++;
             }
              if (str[i] == 0)
             {
@@ -181,7 +170,7 @@ void    tokenizer_text(t_shell *shell, int *ind, char *str)
         }
         else if (str[i] == '$')
         {
-            if (ft_isset(" \t<>|", str[i + 1])))
+            if (ft_isset(" \t<>|", str[i + 1]) || str[i + 1] == 0)
             {
                 l = ft_strjoin_part(l, str + *ind, (i + 1) - *ind);
                 *ind = i + 1;
@@ -189,13 +178,14 @@ void    tokenizer_text(t_shell *shell, int *ind, char *str)
                 return ;
             }
             l = ft_strjoin_part(l, str + *ind, i - *ind);
+            i++;
             *ind = i;
-            expand_var(shell, ind, str, l);
+            l = expand_var(shell, ind, str, l);
+            i = *ind;
         }
         else
             i++;
     }
-    printf("la phrase est %s\n", str + *ind);
     l = ft_strjoin_part(l, str + *ind, i - *ind);
     i++;
     *ind = i;
@@ -211,7 +201,7 @@ void tokenizer_redir_in(t_shell *shell, int *ind, char *str)
     }
     else
         ft_token_add_back(&(shell->tokens), ft_tokennew(INPUT, NULL));
-    (*ind)++
+    (*ind)++;
 }
 
 void tokenizer_redir_out(t_shell *shell, int *ind, char *str)
@@ -223,7 +213,7 @@ void tokenizer_redir_out(t_shell *shell, int *ind, char *str)
     }
     else
         ft_token_add_back(&(shell->tokens), ft_tokennew(TRUNC, NULL));
-    (*ind)++
+    (*ind)++;
 }
 
 void    tokenizer(t_shell *shell, char *line)
@@ -246,7 +236,7 @@ void    tokenizer(t_shell *shell, char *line)
             tokenizer_redir_in(shell, &i, line);
         else if(line[i])
         {
-            tokenizer_text(shell, &i, line)));
+            tokenizer_text(shell, &i, line);
         }        
     }
 }

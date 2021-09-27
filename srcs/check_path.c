@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 17:28:17 by user42            #+#    #+#             */
-/*   Updated: 2021/09/27 19:18:51 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/27 21:05:19 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,12 @@ char	*env_value(char **env, char *search)
 	
 	i = 0;
 	l = search_env(env, search);
-	while (l[i] != '=')
+	while (l && l[i] != '=')
 		i++;
-	str = ft_strdup(l[i + 1]);
+	if (l)
+		str = ft_strdup(l + i + 1);
+	else
+		str = NULL;
 	return (str);
 }
 
