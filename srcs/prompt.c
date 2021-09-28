@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 16:24:41 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/26 22:47:07 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/28 22:09:00 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,9 @@ void    handle_prompt(void)
 
     write(1, cur_dir, ft_strlen(cur_dir));
     write(1, "$ ", 2);
+}
+
+void    handle_prompt_heredoc(void)
+{
+    write(1, "> ", 2);
 }

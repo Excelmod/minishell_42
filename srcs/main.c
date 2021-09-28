@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/28 18:08:08 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/28 22:08:36 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,23 +51,28 @@ void	initialization_shell(t_shell *shell, char **ap)
 
 void	loop(t_shell *shell)
 {
-	char *line;
+	char 	*line;
+	int		error;
 	t_token *lst;
 
 	line = NULL;
+	handle_prompt();
 	while(get_next_line(0, &line))
 	{
-		tokenizer(shell, line);
+		error = tokenizer(shell, line);
 		lst = shell->tokens;
 		while(lst)
 		{
 			printf("le type est %s et la ligne est :%s\n", type_str[(int)(lst->type)], lst->line);
 			lst = lst->next;
 		}
-		parsing(shell);
+		error = check_syntax_error(shell, error);
+		if(!error)
+			parsing(shell);
 		ft_tokenclear(&(shell->tokens));
 		free(line);
 		line = NULL;
+		handle_prompt();
 	}
 }
 
