@@ -6,9 +6,13 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 22:11:23 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/26 16:47:26 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/28 18:28:24 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	parsing(t_shell *shell, int error)
+{
+
+}

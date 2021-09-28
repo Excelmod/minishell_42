@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 22:11:23 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/27 22:45:38 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/28 18:08:43 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,7 @@ void tokenizer_redir_out(t_shell *shell, int *ind, char *str)
     (*ind)++;
 }
 
-void    tokenizer(t_shell *shell, char *line)
+int    tokenizer(t_shell *shell, char *line)
 {
     int i;
     int error;
@@ -242,4 +242,5 @@ void    tokenizer(t_shell *shell, char *line)
             error = tokenizer_text(shell, &i, line);
         }        
     }
+    return(error);
 }

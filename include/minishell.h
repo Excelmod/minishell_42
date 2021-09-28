@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/27 22:41:47 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/28 18:31:28 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,15 @@ typedef	struct	s_token
 	t_token		*next;
 }	t_token;
 
+typedef	struct	s_cmd
+{
+	char			**cmds;
+	int				fd_in;
+	int				fd_out;
+	struct s_token	next;
+	struct s_token	prev;
+}
+
 int			check_path(t_shell *shell, char *path, char *cmd);
 void		search_cmd(t_shell *shell, char *cmd);
 void		exit_message_error(t_shell *shell, char *msg);
@@ -61,7 +70,7 @@ char		**ft_freetabs(char **t);
 char		*search_env(char **env, char *search);
 char 		*cur_dir_name(void);
 void    	handle_prompt(void);
-void    	tokenizer(t_shell *shell, char *line);
+int    	tokenizer(t_shell *shell, char *line);
 void		exit_free(t_shell *shell);
 int			get_next_line(int fd, char** line);
 t_token		*ft_tokennew(enum types type, char *line);
@@ -69,4 +78,6 @@ void		ft_token_add_back(t_token **atoken, t_token *new);
 t_token		*ft_tokenlast(t_token *token);
 char		*env_value(char **env, char *search);
 void		message_error(char *msg);
+int			tokenizer(t_shell *shell, char *line);
+void		parsing(t_shell *shell, int error);
 #endif

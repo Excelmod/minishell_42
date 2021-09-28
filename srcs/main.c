@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/27 18:51:06 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/28 18:08:08 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	loop(t_shell *shell)
 			printf("le type est %s et la ligne est :%s\n", type_str[(int)(lst->type)], lst->line);
 			lst = lst->next;
 		}
+		parsing(shell);
 		ft_tokenclear(&(shell->tokens));
 		free(line);
 		line = NULL;
