@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/28 22:17:41 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/28 23:32:21 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef	struct	s_token
 {
 	enum types	type;
 	char		*line;
+	int			fd;
 	t_token		*next;
 }	t_token;
 

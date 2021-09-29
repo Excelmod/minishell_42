@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 22:11:23 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/28 18:08:43 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/29 20:15:06 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,6 @@ int    tokenizer_text(t_shell *shell, int *ind, char *str)
             i++;
     }
     l = ft_strjoin_part(l, str + *ind, i - *ind);
-    i++;
     *ind = i;
     ft_token_add_back(&(shell->tokens), ft_tokennew(TEXT, l));
     return(0);

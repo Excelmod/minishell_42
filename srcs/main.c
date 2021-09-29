@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/28 22:08:36 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/29 20:29:41 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	loop(t_shell *shell)
 	char 	*line;
 	int		error;
 	t_token *lst;
+	int		i;
+	t_cmd	*cmd;
 
 	line = NULL;
 	handle_prompt();
@@ -69,9 +71,32 @@ void	loop(t_shell *shell)
 		error = check_syntax_error(shell, error);
 		if(!error)
 			parsing(shell);
-		ft_tokenclear(&(shell->tokens));
 		free(line);
 		line = NULL;
+		ft_tokenclear(&(shell->tokens));
+		cmd = shell->cmd;
+		while(cmd)
+		{
+			i = 0;
+			printf("le input fd est %d et le output fd est %d\n", cmd->fd_in, cmd->fd_out);
+			while(cmd->cmds && cmd->cmds[i])
+			{
+				printf("ARG %d = %s  ", i + 1, cmd->cmds[i]);
+				i++;
+			}
+			if (cmd->fd_in != -1)
+			{
+				char *str;
+				str =NULL;
+				printf("HEREDOC:\n");
+				while(get_next_line(cmd->fd_in, &str))
+				{
+					printf("%s\n", str);
+				}
+			}
+			printf("\n\n");
+			cmd = cmd->next;
+		}
 		handle_prompt();
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 20:03:59 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/28 22:20:46 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/09/28 23:51:57 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,24 @@ t_list  *get_heredoc_lines(char *cmp)
     return(lst);
 }
 
+void    write_heredoc(t_list *list, t_token *token)
+{
+    int fd;
+
+    fd = open("/tmp/.minishell_heredoc",
+			O_WRONLY | O_TRUNC | O_CREAT, S_IWUSR | S_IRUSR);
+    while(list)
+    {
+        ft_putendl_fd((char *)(list->content), fd);
+        list = list->next;
+    }
+    close(fd);
+    fd = open("/tmp/.minishell_heredoc", O_RDONLY);
+    unlink("/tmp/.minishell_heredoc");
+    token->fd = fd;
+    token->next->fd = fd;
+}
+
 void 	handle_error_heredoc(t_shell *shell, int count)
 {
     t_token *token;
@@ -49,6 +67,7 @@ void 	handle_error_heredoc(t_shell *shell, int count)
         if (token->type == HEREDOC)
         {
             list = get_heredoc_lines(token->next->line);
+            write_heredoc(list, token);
             ft_lstclear(&list, del_str);
             count--;
         }
@@ -81,25 +100,30 @@ int 	check_syntax_error(t_shell *shell, int error)
 
     hdoc_count = 0;
     token = shell->tokens;
-    while(token)
+    if (token && token->type == PIPE)
+        msg_err_syntax_type(token);
+    else
     {
-        if (token->type > TEXT && token->type < PIPE && (token->next == NULL || token->next->type != TEXT))
+        while(token)
         {
-            error = msg_err_syntax_type(token->next);
-            break;
+            if (token->type > TEXT && token->type < PIPE && (token->next == NULL || token->next->type != TEXT))
+            {
+                error = msg_err_syntax_type(token->next);
+                break;
+            }
+            else if (token->type == PIPE && (token->next == NULL || token->next->type == PIPE))
+            {
+                error = msg_err_syntax_type(token->next);
+                break;
+            }
+            else if (token->type == HEREDOC)
+                hdoc_count++;
+            else if (token->next == NULL && error)
+                msg_err_syntax_type(token->next);
+            token = token->next;
         }
-        else if (token->type == PIPE && (token->next == NULL || token->next->type == PIPE))
-        {
-            error = msg_err_syntax_type(token->next);
-            break;
-        }
-        else if (token->type == HEREDOC)
-            hdoc_count++;
-        else if (token->next == NULL && error)
-            msg_err_syntax_type(token->next);
-        token = token->next;
-    }
-    if (error && hdoc_count)
+    }   
+    if (hdoc_count)
         handle_error_heredoc(shell, hdoc_count);
     return(error);
 }
