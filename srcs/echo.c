@@ -6,10 +6,16 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 00:55:27 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/03 17:30:10 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/03 18:19:23 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int     builtin_echo()
+int     builtin_echo(char **args)
+{
+    int i;
+
+    i = 0;
+    return(0);
+}

@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/03 17:48:19 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/03 18:18:59 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void		message_error(char *msg);
 int			tokenizer(t_shell *shell, char *line);
 void		parsing(t_shell *shell);
 int 		check_syntax_error(t_shell *shell, int error);
-void    	builtin_env(t_shell *shell);
+int			builtin_env(t_shell *shell);
+int     	builtin_echo(char **args);
 char		*parsing_tokenizer(t_shell *shell , char *line);
 #endif

@@ -6,13 +6,11 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/03 17:55:51 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/03 18:01:26 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char *type_str[7] = {"ERROR", "TEXT", "TRUNC", "APPEND", "HEREDOC", "INPUT", "PIPE"};
 
 char	**new_env(char **ap, char *str)
 {
