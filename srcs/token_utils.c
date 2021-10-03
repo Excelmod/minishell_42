@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 18:01:16 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/26 18:01:34 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/03 19:30:21 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_token	*ft_tokenlast(t_token *token)
 	return (token);
 }
 
-t_token	*ft_tokennew(enum types type, char *line)
+t_token	*ft_tokennew(enum e_types type, char *line)
 {
 	t_token	*new;
 
