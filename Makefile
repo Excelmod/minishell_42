@@ -4,7 +4,7 @@
 NAME = minishell
 
 # Create a list of *.c sources in DIRS
-SOURCES = srcs/check_path.c srcs/get_next_line.c srcs/parsing.c srcs/search_cmd.c srcs/exit_free.c srcs/main.c srcs/prompt.c srcs/tokenizer.c srcs/token_utils.c srcs/check_syntax_error.c
+SOURCES = srcs/check_path.c srcs/get_next_line.c srcs/parsing.c srcs/search_cmd.c srcs/exit_free.c srcs/main.c srcs/prompt.c srcs/tokenizer.c srcs/token_utils.c srcs/check_syntax_error.c srcs/env.c srcs/parsing_tokenizer.c
 
 # Define objects for all sources
 OBJS = $(SOURCES:.c=.o)

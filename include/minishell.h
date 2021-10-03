@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/28 23:32:21 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/03 17:48:19 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <readline/history.h>
 # include "libft.h"
 
-enum types 
+enum types //enumeration pour les different type de token utile que dans la partie parsing-lexer.
 {
 	ERROR,
 	TEXT,
@@ -38,7 +38,7 @@ enum types
 typedef	struct	s_token t_token;
 typedef	struct	s_cmd t_cmd;
 
-typedef	struct	s_token
+typedef	struct	s_token //struture pour les token n'est utile que pour le parsing.
 {
 	enum types	type;
 	char		*line;
@@ -46,22 +46,21 @@ typedef	struct	s_token
 	t_token		*next;
 }	t_token;
 
-typedef	struct	s_cmd
+typedef	struct	s_cmd //struture pour les commande chaque commande succesives est separee par un pipe.
 {
-	char	**cmds;
-	int		fd_in;
-	int		fd_out;
+	char	**cmds; //cmds[0] est la commandes et le reste jusqu'a cmds[n] == NULL sont des arguments pour la commande.
+	int		fd_in; //fd de redirection d'entree.
+	int		fd_out;	//fd de redirection de sortie.
 	t_cmd	*next;
 	t_cmd	*prev;
 }	t_cmd;	
 
-typedef struct s_shell
+typedef struct s_shell //struture pour minishell il sert a stocke et passer facilement des donnees en argument.
 {
-	char	**av;
-	char	**env;
-	char	**path;
-	t_token	*tokens;
-	t_cmd	*cmd;
+	char	**env;//tableau de string contenant les variables d'environement.
+	char	**path;//tableau de string contenant les chemins de path.
+	t_token	*tokens;//utile que dans la partie parsing
+	t_cmd	*cmd;//pointeur vers la premiere commande.
 }	t_shell;
 
 int			check_path(char *path, char *cmd);
@@ -83,4 +82,6 @@ void		message_error(char *msg);
 int			tokenizer(t_shell *shell, char *line);
 void		parsing(t_shell *shell);
 int 		check_syntax_error(t_shell *shell, int error);
+void    	builtin_env(t_shell *shell);
+char		*parsing_tokenizer(t_shell *shell , char *line);
 #endif

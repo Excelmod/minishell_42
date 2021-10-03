@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/29 20:29:41 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/03 17:55:51 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,42 +61,7 @@ void	loop(t_shell *shell)
 	handle_prompt();
 	while(get_next_line(0, &line))
 	{
-		error = tokenizer(shell, line);
-		lst = shell->tokens;
-		while(lst)
-		{
-			printf("le type est %s et la ligne est :%s\n", type_str[(int)(lst->type)], lst->line);
-			lst = lst->next;
-		}
-		error = check_syntax_error(shell, error);
-		if(!error)
-			parsing(shell);
-		free(line);
-		line = NULL;
-		ft_tokenclear(&(shell->tokens));
-		cmd = shell->cmd;
-		while(cmd)
-		{
-			i = 0;
-			printf("le input fd est %d et le output fd est %d\n", cmd->fd_in, cmd->fd_out);
-			while(cmd->cmds && cmd->cmds[i])
-			{
-				printf("ARG %d = %s  ", i + 1, cmd->cmds[i]);
-				i++;
-			}
-			if (cmd->fd_in != -1)
-			{
-				char *str;
-				str =NULL;
-				printf("HEREDOC:\n");
-				while(get_next_line(cmd->fd_in, &str))
-				{
-					printf("%s\n", str);
-				}
-			}
-			printf("\n\n");
-			cmd = cmd->next;
-		}
+		line = parsing_tokenizer(shell, line); // fonction regroupant toute les fonctions parsing et tokenization,  qui free line et retourne NULL, 
 		handle_prompt();
 	}
 }
