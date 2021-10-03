@@ -6,11 +6,11 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/03 17:41:03 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/03 17:53:12 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/03 18:27:21 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.c"
+#include "minishell.h"
 
 char	*parsing_tokenizer(t_shell *shell , char *line)
 {

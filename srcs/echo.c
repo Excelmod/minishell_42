@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 00:55:27 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/03 18:19:23 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/03 18:27:04 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 int     builtin_echo(char **args)
 {
     int i;
+    int option;
 
     i = 0;
+    if
     return(0);
 }

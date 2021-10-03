@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/03 18:01:26 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/03 18:27:03 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,6 @@ void	initialization_shell(t_shell *shell, char **ap)
 void	loop(t_shell *shell)
 {
 	char 	*line;
-	int		error;
-	t_token *lst;
-	int		i;
-	t_cmd	*cmd;
 
 	line = NULL;
 	handle_prompt();
