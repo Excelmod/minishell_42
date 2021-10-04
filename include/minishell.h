@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/03 23:03:32 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/04 21:02:16 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+//# include <readline/readline.h>
+//# include <readline/history.h>
 # include "libft.h"
 
 enum e_types //enumeration pour les different type de token utile que dans la partie parsing-lexer.
@@ -88,5 +88,7 @@ int     	builtin_echo(char **args);
 char		*parsing_tokenizer(t_shell *shell , char *line);
 void    	print_export(t_shell *shell);
 int			builtin_export(t_shell *shell, char **args);
+char		**delete_env(char **ap, char *str);
 int			ft_strcmp_sep(char *s1, char *s2, char sep);
+int			builtin_unset(t_shell *shell, char **args);
 #endif

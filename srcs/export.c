@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/03 19:17:39 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/03 23:52:19 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/04 20:57:14 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,34 +51,6 @@ char	**add_env(char **ap, char *str)
     i++;
 	new[i] = NULL;
     free(ap);
-	return (new);
-}
-
-char	**delete_env(char **ap, char *str)
-{
-	int i;
-    int j;
-	char **new;
-
-	i = 0;
-    j = 0;
-	while (ap && ap[i] != NULL)
-		i++;
-	new = malloc(sizeof(char *) * i + 1);
-	i = 0;
-	while (ap && ap[i] != NULL)
-	{
-        if (ft_strcmp_sep(ap[i], str, '='))
-		    new[i - j] = ap[i];
-        else
-        {
-            free(ap[i]);
-            j++;
-        }
-		i++;
-    }
-    free(ap);
-	new[i - j] = NULL;
 	return (new);
 }
 

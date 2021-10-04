@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 22:11:23 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/29 20:15:06 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/04 21:06:50 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ char    *ft_strjoin_part(char *s1, char *spart, int l)
         return (s1);
     l1 = 0;
     if (s1)
+    {
         l1 = ft_strlen(s1);
+    }
 	dest = malloc(sizeof(*dest) * (l1 + l + 1));
 	if (spart != NULL && dest != NULL)
 	{

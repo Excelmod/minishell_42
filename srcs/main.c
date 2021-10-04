@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/03 23:56:11 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/04 21:04:43 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,7 @@ int	main(int ac, char **av, char **ap)
 	t_shell	*sh;
 
 	sh = NULL;
-	ac = 0;
-	av = 0;
+	if (ac && av)
 	sh = malloc(sizeof(t_shell));
 	if (sh == NULL)
 	{
