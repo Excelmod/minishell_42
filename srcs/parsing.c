@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 22:11:23 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/29 20:21:17 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/05 19:09:37 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,51 +22,82 @@ t_cmd   *new_struct_cmd(t_cmd *prev)
     cmd->fd_out = -1;
     cmd->cmds = NULL;
     cmd->next = NULL;
+    cmd->msg_error = NULL;
     return (cmd);
 }
 
-void    switch_fd(t_cmd *cmd, int fd, int io)
+int    switch_fd(t_cmd *cmd, int fd, int io)
 {
     if (io)
     {
         if (cmd->fd_out >= 0)
-            close(fd);
+            close(cmd->fd_out);
         cmd->fd_out = fd;
     }
     else
     {
         if (cmd->fd_in >= 0)
-            close(fd);
+            close(cmd->fd_in);
         cmd->fd_in = fd;
     }
+    if (fd < 0)
+        return(1);
+    return (0);
 }
 
-void    parsing_io_files(t_cmd *cmd, t_token *token)
+int    parsing_io_files(t_cmd *cmd, t_token *token)
 {
     int fd;
+    int error;
 
+    error = 0;
     if(token->type == INPUT)
     {
         fd = open(token->next->line, O_RDONLY);
-        switch_fd(cmd, fd, 0);
+        error = switch_fd(cmd, fd, 0);
     }
     else if(token->type == TRUNC)
     {
         fd = open(token->next->line,
 			O_WRONLY | O_TRUNC | O_CREAT, S_IWUSR | S_IRUSR);
-        switch_fd(cmd, fd, 1);
+        error = switch_fd(cmd, fd, 1);
     }
     else if(token->type == APPEND)
     {
         fd = open(token->next->line,
 			O_WRONLY | O_APPEND | O_CREAT, S_IWUSR | S_IRUSR);
-        switch_fd(cmd, fd, 1);
+        error = switch_fd(cmd, fd, 1);
     }
     else if(token->type == HEREDOC)
     {
         fd = token->fd;
-        switch_fd(cmd, fd, 0);
+        error = switch_fd(cmd, fd, 0);
     }
+    return (error);
+}
+
+t_token    *open_msg_error(t_cmd *cmd, t_token *token)
+{
+    char    *str;
+    char    *tmp;
+
+    tmp = NULL;
+    str = ft_strjoin("minishell: ", token->next->line);
+    tmp = str;
+    str = ft_strjoin(str, ": ");
+    free(tmp);
+    tmp = str;
+    str = ft_strjoin(str, strerror(errno));
+    free(tmp);
+    cmd->msg_error = str;
+    while (token->next->type != PIPE)
+    {
+        if (token->type == HEREDOC)
+            close(token->fd);
+        token = token->next;
+    }
+    cmd->cmds = ft_freetabs(cmd->cmds);
+    return (token);
 }
 
 void    parsing_text(t_cmd *cmd, t_token *token)
@@ -103,8 +134,10 @@ void	parsing(t_shell *shell)
     {
         if (token->type > TEXT && token->type < PIPE)
         {
-            parsing_io_files(lst_cmd, token);
-            token = token->next;
+            if(parsing_io_files(lst_cmd, token))
+                token = open_msg_error(lst_cmd, token);
+            else
+                token = token->next;
         }
         else if (token->type == TEXT)
             parsing_text(lst_cmd, token);

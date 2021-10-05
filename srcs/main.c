@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/04 21:04:43 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/05 19:04:40 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	initialization_shell(t_shell *shell, char **ap)
 	shell->exp = NULL;
 	shell->tokens = NULL;
 	shell->path = ft_split(search_env(shell->env, "PATH") + 5, ':');
+	shell->stdin = dup(0);
+	shell->stdout = dup(1);
 	if (!(shell->path))
 	{
 		perror("shell");
@@ -49,11 +51,10 @@ void	loop(t_shell *shell)
 	char 	*line;
 
 	line = NULL;
-	handle_prompt();
-	while(get_next_line(0, &line))
+	while((line = readline("Minishell :")) != NULL)
 	{
 		line = parsing_tokenizer(shell, line); // fonction regroupant toute les fonctions parsing et tokenization,  qui free line et retourne NULL,
-		handle_prompt();
+		starting_execution(shell);
 	}
 }
 

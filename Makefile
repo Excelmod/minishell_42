@@ -9,9 +9,10 @@ SOURCES =  	srcs/check_path.c		srcs/get_next_line.c 		srcs/parsing.c 				srcs/ex
 			srcs/tokenizer.c	 	srcs/token_utils.c	 		srcs/check_syntax_error.c 					\
 			srcs/env.c 	  			srcs/parsing_tokenizer.c	srcs/echo.c	  								\
 			srcs/print_export.c		srcs/unset.c															\
-
+			srcs/display_struct.c	srcs/start_exec.c			srcs/compare.c								\
 # Define objects for all sources
 OBJS = $(SOURCES:.c=.o)
+RL = -lreadline
 
 # Define headers files
 CFLAGS = -Wall -Werror -Wextra
@@ -30,7 +31,7 @@ libft.a :
 	cd libft && $(MAKE) && mv libft.a ../
 
 $(NAME): $(OBJS)
-	$(CC) -g3 -fsanitize=address -o $@ $(OBJS) libft.a
+	$(CC) -g3 -fsanitize=address  $(RL) -o $@ $(OBJS) libft.a
 
 # Remove all objects, dependencies and executable files generated during the build
 clean:
