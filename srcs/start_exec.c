@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lchristo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 17:06:37 by lchristo          #+#    #+#             */
-/*   Updated: 2021/10/05 14:26:12 by lchristo         ###   ########.fr       */
+/*   Updated: 2021/10/05 22:33:02 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void    starting_execution(t_shell *shell)
 {
     int i;
 
-    display_struct(shell);
+    //display_struct(shell);
     if (shell->cmd->fd_out != -1)
         dup2(shell->cmd->fd_out, 1);
     if (check_builtin(shell, shell->cmd->cmds[0]) == 0)
