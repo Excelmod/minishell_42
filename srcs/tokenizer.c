@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 22:11:23 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/04 21:06:50 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/05 19:35:50 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,17 @@ char   *sub_expand_var(t_shell *shell, char *str, char *l)
     return(l);
 }
 
+char    *expand_exit_status(t_shell *shell, int *ind, char *l)
+{
+    char    *nb;
+
+    (*ind)++;
+    nb = ft_itoa(shell->exit_status);
+    l = ft_strjoin_part(l, nb, ft_strlen(nb));
+    free(nb);
+    return(l);
+}
+
 char    *expand_var(t_shell *shell, int *ind, char *str, char *l)
 {
     int     i;
@@ -67,26 +78,24 @@ char    *expand_var(t_shell *shell, int *ind, char *str, char *l)
     char    *value;
 
     i = *ind;
-    printf("la phrase est %s\n", str + *ind);
     if (ft_isdigit(str[*ind]))
     {
         (*ind)++;
         return(l);
     }
-    else if (ft_isalpha(str[*ind]) == 0)
+    else if (str[i] == '?')
+        return(expand_exit_status(shell, ind, l));
+    else if (ft_isalpha(str[*ind]) == 0 && str[i] != '_')
         return(l);
     while (ft_isalnum(str[i]) || str[i] == '_')
         i++;
     env = malloc(sizeof(char) * ((i - *ind) + 1));
     ft_strlcpy(env, str + *ind, (i - *ind) + 1);
-    printf("la phrase ENV est %s\n", env);
     value = env_value(shell->env, env);
-    printf("la phrase VALUE est %s\n", value);
     free(env);
     *ind = i;
     if (value)
         l = sub_expand_var(shell, value, l);
-    printf("la phrase VALUE est %s\n", l);
     free(value);
     return(l);
 }
@@ -104,7 +113,9 @@ char    *expand_var_quote(t_shell *shell, int *ind, char *str, char *l)
         (*ind)++;
         return(l);
     }
-    else if (ft_isalpha(str[*ind]) == 0)
+    else if (str[i] == '?')
+        return(expand_exit_status(shell, ind, l));
+    else if (ft_isalpha(str[*ind]) == 0 && str[i] != '_')
         return(l);
     while (ft_isalnum(str[i]) || str[i] == '_')
         i++;

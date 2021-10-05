@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/05 19:06:05 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/05 19:12:16 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_shell //struture pour minishell il sert a stocke et passer faci
 	char	**path;//tableau de string contenant les chemins de path.
 	int		stdin;//Duplication fd of the standard input
 	int		stdout;//Duplication fd of the standard output
+	int		exit_status;
 	t_token	*tokens;//utile que dans la partie parsing
 	t_cmd	*cmd;//pointeur vers la premiere commande.
 }	t_shell;

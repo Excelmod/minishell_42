@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/05 19:04:40 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/05 19:12:34 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	initialization_shell(t_shell *shell, char **ap)
 	shell->path = ft_split(search_env(shell->env, "PATH") + 5, ':');
 	shell->stdin = dup(0);
 	shell->stdout = dup(1);
+	shell->exit_status = 0;
 	if (!(shell->path))
 	{
 		perror("shell");
