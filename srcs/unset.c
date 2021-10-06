@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 20:40:35 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/04 21:07:38 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/06 16:27:36 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	**delete_env(char **ap, char *str)
     j = 0;
 	while (ap && ap[i] != NULL)
 		i++;
-	new = malloc(sizeof(char *) * i + 1);
+	new = malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while (ap && ap[i] != NULL)
 	{

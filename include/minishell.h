@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/05 22:48:45 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/05 23:39:45 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,4 +100,5 @@ int     	builtin_echo(char **args);// <- echo
 int			builtin_env(t_shell *shell);// <- env
 int			builtin_export(t_shell *shell, char **args);// <- export
 int			builtin_unset(t_shell *shell, char **args); // <-unset
+int			builtin_cd(t_shell *shell, char **arg);// <-cd
 #endif

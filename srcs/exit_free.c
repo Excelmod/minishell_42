@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:50:00 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/27 22:41:40 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/06 16:00:31 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	**ft_freetabs(char **t)
 	int	i;
 
 	i = 0;
-	while (t[i] != NULL)
+	while (t && t[i] != NULL)
 	{
 		free(t[i]);
 		t[i] = NULL;

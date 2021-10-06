@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 22:11:23 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/05 19:09:37 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/06 16:00:12 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ t_token    *open_msg_error(t_cmd *cmd, t_token *token)
     str = ft_strjoin(str, strerror(errno));
     free(tmp);
     cmd->msg_error = str;
-    while (token->next->type != PIPE)
+    while (token->next && token->next->type != PIPE)
     {
         if (token->type == HEREDOC)
             close(token->fd);

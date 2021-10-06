@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 17:06:37 by lchristo          #+#    #+#             */
-/*   Updated: 2021/10/05 22:33:02 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/06 16:03:47 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int     check_builtin(t_shell *shell, char *str)
 {
     int i;
 
-    i = 1;
+    i = -1;
     // if (shell->cmd->msg_error != NULL)
     // {
     //    ft_putstr_fd(shell->cmd->msg_error, 2);
@@ -31,7 +31,9 @@ int     check_builtin(t_shell *shell, char *str)
         i = builtin_export(shell, shell->cmd->cmds);
     if (compare(str, "unset"))
         i = builtin_unset(shell, shell->cmd->cmds);
-    if (i < 0)
+    if (compare(str, "cd"))
+        i = builtin_cd(shell, shell->cmd->cmds);
+    if (i > 0)
         printf("problem\n");
     return (i);
 }
@@ -58,11 +60,14 @@ void    starting_execution(t_shell *shell)
     //display_struct(shell);
     if (shell->cmd->fd_out != -1)
         dup2(shell->cmd->fd_out, 1);
-    if (check_builtin(shell, shell->cmd->cmds[0]) == 0)
+    if (shell->cmd->cmds && check_builtin(shell, shell->cmd->cmds[0]) != -1)
         return ;
     i = fork();
     if (i == 0)
-        path(shell);
+    {
+        if (shell->cmd->cmds)
+            path(shell);
+    }
     else
         waitpid(i, NULL, 0);
     // display_struct(shell);
