@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 23:16:41 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/06 01:30:20 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/06 17:19:29 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int    ft_cutstr(char *str, char sep, int i)
     cnt = 0;
     str = str + i;
     tmp = str + 1;
-    while (*str != sep)
+    while (i && *str != sep)
     {
        i--;
        str--;
@@ -42,7 +42,7 @@ char    *change_pwd(t_shell *shell, char *path)
     i = 0;
     while(path[i])
     {
-        if (path[i] == '.' && path[i - 1] == '/' && (!path[i + 1] || ft_isset("/.", path[i + 1])))
+        if (path[i] == '.' && (path[i - 1] == '/' || i == 0) && (!path[i + 1] || ft_isset("/.", path[i + 1])))
         {
             i = ft_cutstr(path, '/', i);
             if (path[i] == '.')
@@ -54,6 +54,8 @@ char    *change_pwd(t_shell *shell, char *path)
                 i = 1;
             }
         }
+        else if (path[i] == '/' && ((path[i + 1] == 0 && i) || path[i + 1] == '/'))
+            ft_memmove(path + i, path + i + 1, ft_strlen(path + i + 1) + 1);
         else
             i++;
     }

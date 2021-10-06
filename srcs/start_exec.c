@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 17:06:37 by lchristo          #+#    #+#             */
-/*   Updated: 2021/10/06 16:50:47 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/06 16:55:54 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void    starting_execution(t_shell *shell)
     //display_struct(shell);
      if (shell->cmd->msg_error != NULL)
      {
-        ft_putstr_fd(shell->cmd->msg_error, 2);
+        ft_putendl_fd(shell->cmd->msg_error, 2);
         free(shell->cmd->msg_error);
             return ;
     }
