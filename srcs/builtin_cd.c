@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 23:16:41 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/06 17:19:29 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/06 17:36:25 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ int     builtin_cd(t_shell *shell, char **arg)
         {
             path = change_pwd(shell, path);
             shell->pwd = path;
-            printf("%s\n", shell->pwd);
             return(0);
         }
         printf("%s\n", shell->pwd);

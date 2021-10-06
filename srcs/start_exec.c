@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 17:06:37 by lchristo          #+#    #+#             */
-/*   Updated: 2021/10/06 16:55:54 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/06 17:35:00 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int     check_builtin(t_shell *shell, char *str)
         i = builtin_unset(shell, shell->cmd->cmds);
     if (compare(str, "cd"))
         i = builtin_cd(shell, shell->cmd->cmds);
+    if (compare(str, "pwd"))
+        i = builtin_pwd(shell);
     if (i > 0)
         printf("problem\n");
     return (i);
