@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 22:11:23 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/05 19:35:50 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/18 21:15:51 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ char    *expand_var_quote(t_shell *shell, int *ind, char *str, char *l)
     char    *env;
     char    *value;
 
-    (*ind)++;
     i = *ind;
     if (ft_isdigit(str[*ind]))
     {
@@ -146,9 +145,10 @@ int    tokenizer_text(t_shell *shell, int *ind, char *str)
             *ind = i;
             while(str[i] && str[i] != '\"')
             {
-                if (str[i] == '$')
+                if (str[i] == '$' && !(shell->tokens && ft_tokenlast(shell->tokens)->type == HEREDOC))
                 {
                     l = ft_strjoin_part(l, str + *ind, i - *ind);
+					i++;
                     *ind = i;
                     l = expand_var_quote(shell, ind, str, l);
                     i = *ind;
@@ -192,8 +192,13 @@ int    tokenizer_text(t_shell *shell, int *ind, char *str)
             }
             l = ft_strjoin_part(l, str + *ind, i - *ind);
             i++;
+			if(shell->tokens && ft_tokenlast(shell->tokens)->type == HEREDOC)
+				continue;
             *ind = i;
-            l = expand_var(shell, ind, str, l);
+			if(shell->tokens && ft_tokenlast(shell->tokens)->type > TEXT && ft_tokenlast(shell->tokens)->type < PIPE)
+					l = expand_var_quote(shell, ind, str, l);
+			else
+            	l = expand_var(shell, ind, str, l);
             i = *ind;
         }
         else

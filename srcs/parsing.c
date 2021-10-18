@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 22:11:23 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/06 16:52:59 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/16 18:23:23 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,13 @@ t_token    *open_msg_error(t_cmd *cmd, t_token *token)
     char    *tmp;
 
     tmp = NULL;
+	str = NULL;
     str = ft_strjoin("minishell: ", token->next->line);
     tmp = str;
-    str = ft_strjoin(str, ": ");
+    str = ft_strjoin(tmp, ": ");
     free(tmp);
     tmp = str;
-    str = ft_strjoin(str, strerror(errno));
+    str = ft_strjoin(tmp, strerror(errno));
     free(tmp);
     cmd->msg_error = str;
     while (token->next && token->next->type != PIPE)

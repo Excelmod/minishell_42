@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/03 19:17:39 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/06 16:27:19 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/16 16:52:17 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int     check_syntax_export(char *str, int *env)
     int i;
 
     i = 0;
-    while (str[i] && str[i] != '=')
+    while (str[i] && str[i] != '=' &&  str[i] != '+')
     {
         if (i == 0 && (ft_isalpha(str[i]) == 0 && str[i] != '_'))
             return (0);
@@ -27,6 +27,13 @@ int     check_syntax_export(char *str, int *env)
     }
     if (str[i] == '=')
         *env = 1;
+	else if (str[i] == '+')
+	{
+		if (str[i + 1] == '=')
+			*env = 2;
+		else
+			return (0);
+	}
     else
         *env = 0;
     return (i);
@@ -81,10 +88,10 @@ void    add_export(t_shell *shell, char *str)
     l = check_syntax_export(str, &env);
     if (l > 0)
     {
-        if (env)
-        {
+        if (env == 1)
             check_add_env(shell, str, l);
-        }
+		else if (env == 2)
+			check_append_env(shell, str, l);
         else
             if (search_env(shell->env, str) == NULL)
                 if (search_env(shell->exp, str) == NULL)
