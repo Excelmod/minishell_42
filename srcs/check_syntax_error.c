@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 20:03:59 by ljulien           #+#    #+#             */
-/*   Updated: 2021/09/28 23:51:57 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/18 23:52:36 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,112 +18,66 @@ void	del_str(void *content)
 	content = NULL;
 }
 
-t_list  *get_heredoc_lines(char *cmp)
+int	msg_err_syntax_type(t_token *token)
 {
-    char    *line;
-    t_list  *lst;
-    int     l;
-    
-    lst = NULL;
-    line = NULL;
-    l = ft_strlen(cmp);
-    handle_prompt_heredoc();
-    while(get_next_line(0, &line))
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	if (token == NULL)
+		ft_putendl_fd("newline'", 2);
+	else if (token->type == PIPE)
+		ft_putendl_fd("|'", 2);
+	else if (token->type == TRUNC)
+		ft_putendl_fd(">'", 2);
+	else if (token->type == APPEND)
+		ft_putendl_fd(">>'", 2);
+	else if (token->type == INPUT)
+		ft_putendl_fd("<'", 2);
+	else if (token->type == HEREDOC)
+		ft_putendl_fd("<<'", 2);
+	return (1);
+}
+
+int	check_syntax_error_loop(t_token *token, int error)
+{
+	int	hdoc_count;
+
+	hdoc_count = 0;
+	while (token)
 	{
-        if (ft_strncmp(line, cmp, l + 1) == 0)
-            break;
-        ft_lstadd_back(&lst, ft_lstnew((void *)line));
-        handle_prompt_heredoc();
-    }
-    return(lst);
+		if (token->type > TEXT && token->type < PIPE
+			&& (token->next == NULL || token->next->type != TEXT))
+		{
+			error = msg_err_syntax_type(token->next);
+			break ;
+		}
+		else if (token->type == PIPE && (token->next == NULL
+				|| token->next->type == PIPE))
+		{
+			error = msg_err_syntax_type(token->next);
+			break ;
+		}
+		else if (token->type == HEREDOC)
+			hdoc_count++;
+		else if (token->next == NULL && error)
+			msg_err_syntax_type(token->next);
+		token = token->next;
+	}
+	return (hdoc_count);
 }
 
-void    write_heredoc(t_list *list, t_token *token)
+int	check_syntax_error(t_shell *shell, int error)
 {
-    int fd;
+	int		hdoc_count;
+	t_token	*token;
 
-    fd = open("/tmp/.minishell_heredoc",
-			O_WRONLY | O_TRUNC | O_CREAT, S_IWUSR | S_IRUSR);
-    while(list)
-    {
-        ft_putendl_fd((char *)(list->content), fd);
-        list = list->next;
-    }
-    close(fd);
-    fd = open("/tmp/.minishell_heredoc", O_RDONLY);
-    unlink("/tmp/.minishell_heredoc");
-    token->fd = fd;
-    token->next->fd = fd;
-}
-
-void 	handle_error_heredoc(t_shell *shell, int count)
-{
-    t_token *token;
-    t_list  *list;
-
-    token = shell->tokens;
-    while (token && count)
-    {
-        if (token->type == HEREDOC)
-        {
-            list = get_heredoc_lines(token->next->line);
-            write_heredoc(list, token);
-            ft_lstclear(&list, del_str);
-            count--;
-        }
-        token = token->next;
-    }
-}
-
-int     msg_err_syntax_type(t_token *token)
-{
-    ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-    if  (token == NULL)
-        ft_putendl_fd("newline'", 2);
-    else if(token->type == PIPE)
-        ft_putendl_fd("|'", 2);
-    else if(token->type == TRUNC)
-        ft_putendl_fd(">'", 2);
-    else if(token->type == APPEND)
-        ft_putendl_fd(">>'", 2);
-    else if(token->type == INPUT)
-        ft_putendl_fd("<'", 2);
-    else if(token->type == HEREDOC)
-        ft_putendl_fd("<<'", 2);
-    return(1);
-}
-
-int 	check_syntax_error(t_shell *shell, int error)
-{
-    int     hdoc_count;
-    t_token *token;
-
-    hdoc_count = 0;
-    token = shell->tokens;
-    if (token && token->type == PIPE)
-        msg_err_syntax_type(token);
-    else
-    {
-        while(token)
-        {
-            if (token->type > TEXT && token->type < PIPE && (token->next == NULL || token->next->type != TEXT))
-            {
-                error = msg_err_syntax_type(token->next);
-                break;
-            }
-            else if (token->type == PIPE && (token->next == NULL || token->next->type == PIPE))
-            {
-                error = msg_err_syntax_type(token->next);
-                break;
-            }
-            else if (token->type == HEREDOC)
-                hdoc_count++;
-            else if (token->next == NULL && error)
-                msg_err_syntax_type(token->next);
-            token = token->next;
-        }
-    }   
-    if (hdoc_count)
-        handle_error_heredoc(shell, hdoc_count);
-    return(error);
+	hdoc_count = 0;
+	token = shell->tokens;
+	if (token && token->type == PIPE)
+		msg_err_syntax_type(token);
+	else
+	{
+		hdoc_count = check_syntax_error_loop(token, error);
+	}
+	if (hdoc_count)
+		handle_error_heredoc(shell, hdoc_count);
+	return (error);
 }

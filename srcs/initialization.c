@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 22:47:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/05 23:15:20 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/18 23:30:57 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	**new_env(char **ap)
 {
-	int i;
-	char **new;
+	int		i;
+	char	**new;
 
 	i = 0;
 	while (ap && ap[i] != NULL)
@@ -37,7 +37,7 @@ void	initialization_shlvl(t_shell *shell)
 	int		nb;
 	char	**tab;
 
-	str = env_value(shell->env,"SHLVL");
+	str = env_value(shell->env, "SHLVL");
 	if (str)
 	{
 		nb = ft_atoi(str);
@@ -65,24 +65,24 @@ char	*check_path_pwd(char *path)
 	char	*new;
 
 	cur = cur_dir_name();
-	if(chdir(path))
-    {
-        free(path);
-        return(cur);
-    }
+	if (chdir(path))
+	{
+		free(path);
+		return (cur);
+	}
 	new = cur_dir_name();
 	if (strncmp(new, cur, ft_strlen(new)) != 0)
 	{
 		free(new);
 		free(path);
 		chdir(cur);
-		return(cur);
+		return (cur);
 	}
 	else
 	{
 		free(new);
 		free(cur);
-		return(path);
+		return (path);
 	}
 }
 

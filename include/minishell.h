@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/16 16:54:15 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/19 00:10:02 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,12 @@ void		search_cmd(t_shell *shell, char *cmd);
 void		exit_message_error(t_shell *shell, char *msg);
 void		ft_tokenclear(t_token **lst);
 char		**ft_freetabs(char **t);
+char    	*ft_strjoin_part(char *s1, char *spart, int l);
 char		*search_env(char **env, char *search);
 char 		*cur_dir_name(void);
 void    	handle_prompt(void);
 void    	handle_prompt_heredoc(void);
+void		handle_error_heredoc(t_shell *shell, int count);
 void		exit_free(t_shell *shell);
 int			get_next_line(int fd, char** line);
 t_token		*ft_tokennew(enum e_types type, char *line);
@@ -87,7 +89,12 @@ t_token		*ft_tokenlast(t_token *token);
 char		*env_value(char **env, char *search);
 void		message_error(char *msg);
 int			tokenizer(t_shell *shell, char *line);
+int			tokenizer_text(t_shell *shell, int *ind, char *str);
+char		*expand_exit_status(t_shell *shell, int *ind, char *l);
+char		*expand_var(t_shell *shell, int *ind, char *str, char *l);
+char		*expand_var_quote(t_shell *shell, int *ind, char *str, char *l);
 void		parsing(t_shell *shell);
+int			parsing_io_files(t_cmd *cmd, t_token *token);
 int 		check_syntax_error(t_shell *shell, int error);
 char		*parsing_tokenizer(t_shell *shell , char *line);
 void    	print_export(t_shell *shell);

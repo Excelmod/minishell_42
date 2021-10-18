@@ -9,7 +9,8 @@ SOURCES =  	srcs/check_path.c		srcs/get_next_line.c 		srcs/parsing.c 				srcs/ex
 			srcs/tokenizer.c	 	srcs/token_utils.c	 		srcs/check_syntax_error.c 	srcs/builtin_cd.c	\
 			srcs/env.c 	  			srcs/parsing_tokenizer.c	srcs/echo.c	  				srcs/builtin_pwd.c	\
 			srcs/print_export.c		srcs/unset.c				srcs/initialization.c		srcs/append_env.c	\
-			srcs/display_struct.c	srcs/start_exec.c			srcs/compare.c									\
+			srcs/display_struct.c	srcs/start_exec.c			srcs/compare.c				srcs/parsing_io.c	\
+			srcs/handle_heredoc.c	srcs/tokenizer_test.c		srcs/expand_var.c								\
 # Define objects for all sources
 OBJS = $(SOURCES:.c=.o)
 RL = -lreadline
