@@ -6,17 +6,11 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 20:03:59 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/18 23:52:36 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/19 03:31:33 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	del_str(void *content)
-{
-	free((char *)content);
-	content = NULL;
-}
 
 int	msg_err_syntax_type(t_token *token)
 {
@@ -77,6 +71,8 @@ int	check_syntax_error(t_shell *shell, int error)
 	{
 		hdoc_count = check_syntax_error_loop(token, error);
 	}
+	if (token == NULL && error)
+		msg_err_syntax_type(token);
 	if (hdoc_count)
 		handle_error_heredoc(shell, hdoc_count);
 	return (error);

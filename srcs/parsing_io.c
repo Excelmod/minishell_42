@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 23:21:28 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/18 23:23:46 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/19 03:07:29 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	parsing_io_files(t_cmd *cmd, t_token *token)
 	int	io;
 
 	io = 1;
+	fd = -1;
 	if (token->type == INPUT || token->type == HEREDOC)
 		io = 0;
 	if (token->type == INPUT)

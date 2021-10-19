@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/19 00:10:02 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/19 02:46:04 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_shell //struture pour minishell il sert a stocke et passer faci
 	int		stdout;//Duplication fd of the standard output
 	int		exit_status;// Value to change with the exit status of the executed pipe or command;
 	char	*pwd;//string where is store the path to the current directory.
+	char	*str;
 	t_token	*tokens;//utile que dans la partie parsing
 	t_cmd	*cmd;//pointeur vers la premiere commande.
 }	t_shell;

@@ -6,11 +6,17 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 23:52:07 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/18 23:52:48 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/19 03:08:51 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	del_str(void *content)
+{
+	free((char *)content);
+	content = NULL;
+}
 
 t_list	*get_heredoc_lines(char *cmp)
 {
