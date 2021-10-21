@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 20:03:59 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/19 03:31:33 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/22 00:13:07 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	msg_err_syntax_type(t_token *token)
 	return (1);
 }
 
-int	check_syntax_error_loop(t_token *token, int error)
+int	check_syntax_error_loop(t_token *token, int *error)
 {
 	int	hdoc_count;
 
@@ -40,19 +40,19 @@ int	check_syntax_error_loop(t_token *token, int error)
 		if (token->type > TEXT && token->type < PIPE
 			&& (token->next == NULL || token->next->type != TEXT))
 		{
-			error = msg_err_syntax_type(token->next);
+			*error = msg_err_syntax_type(token->next);
 			break ;
 		}
 		else if (token->type == PIPE && (token->next == NULL
 				|| token->next->type == PIPE))
 		{
-			error = msg_err_syntax_type(token->next);
+			*error = msg_err_syntax_type(token->next);
 			break ;
 		}
 		else if (token->type == HEREDOC)
 			hdoc_count++;
-		else if (token->next == NULL && error)
-			msg_err_syntax_type(token->next);
+		else if (token->next == NULL && *error)
+			*error = msg_err_syntax_type(token->next);
 		token = token->next;
 	}
 	return (hdoc_count);
@@ -66,13 +66,13 @@ int	check_syntax_error(t_shell *shell, int error)
 	hdoc_count = 0;
 	token = shell->tokens;
 	if (token && token->type == PIPE)
-		msg_err_syntax_type(token);
+		error = msg_err_syntax_type(token);
 	else
 	{
-		hdoc_count = check_syntax_error_loop(token, error);
+		hdoc_count = check_syntax_error_loop(token, &error);
 	}
 	if (token == NULL && error)
-		msg_err_syntax_type(token);
+		error = msg_err_syntax_type(token);
 	if (hdoc_count)
 		handle_error_heredoc(shell, hdoc_count);
 	return (error);
