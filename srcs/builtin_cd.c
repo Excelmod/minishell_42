@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 23:16:41 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/18 23:05:13 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/21 23:31:00 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,17 +82,27 @@ char	*path_cd(t_shell *shell, char **arg)
 	char	*path;
 	char	*tmp;
 
+	tmp = env_value(shell->env, "HOME");
 	if (arg[1][0] == '/')
 		path = arg[1];
+	else if (arg[1][0] == '~' && (arg[1][1] == '/' || arg[1][1] == 0)
+			&& search_env(shell->env, "HOME"))
+		path = path_join(tmp, arg[1] + 1);
+	else if (arg[1][0] == '~' && arg[1][1] != 0)
+		path = strdup(arg[1] + 1);
 	else
 	{
+		free(tmp);
 		if (shell->pwd[0] == '/' && !(shell->pwd[1]))
 			tmp = ft_strdup(shell->pwd);
 		else
 			tmp = ft_strjoin(shell->pwd, "/");
-		path = ft_strjoin(tmp, arg[1]);
-		free(tmp);
+		if (arg[1][0] != '~')
+			path = ft_strjoin(tmp, arg[1]);
+		else
+			path = strdup(tmp);
 	}
+	free(tmp);
 	return (path);
 }
 
@@ -100,13 +110,16 @@ int	builtin_cd(t_shell *shell, char **arg)
 {
 	char	*path;
 
-	if (arg && arg[1])
+	if (arg && (arg[1] || search_env(shell->env, "HOME")))
 	{
-		path = path_cd(shell, arg);
+		if (arg[1])
+			path = path_cd(shell, arg);
+		else
+			path = env_value(shell->env, "HOME");
 		if (chdir(path))
 		{
 			ft_putstr_fd("bash: cd: ", 2);
-			perror(arg[1]);
+			perror(path);
 			free(path);
 			return (errno);
 		}

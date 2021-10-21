@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/19 02:46:04 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/21 22:53:38 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_shell //struture pour minishell il sert a stocke et passer faci
 
 void		initialization_shell(t_shell *shell, char **ap);
 int			check_path(char *path, char *cmd);
+char		*path_join(char *s1, char *s2);
 void		search_cmd(t_shell *shell, char *cmd);
 void		exit_message_error(t_shell *shell, char *msg);
 void		ft_tokenclear(t_token **lst);
