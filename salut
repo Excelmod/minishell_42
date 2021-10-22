@@ -1,0 +1,8 @@
+Makefile
+include
+libft
+libft.a
+minishell
+salut
+srcs
+test

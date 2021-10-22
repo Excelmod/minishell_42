@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/21 22:53:38 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/22 23:32:12 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ typedef struct s_shell //struture pour minishell il sert a stocke et passer faci
 	char	**env;//tableau de string contenant les variables d'environement.
 	char	**exp;//tableau contenant les valeur d'export non initialisee.
 	char	**path;//tableau de string contenant les chemins de path.
+	int		*tpid;//tableau de pid pour waitpid
+	int		*tpipe;//tableau de pipe pour dup2
 	int		stdin;//Duplication fd of the standard input
 	int		stdout;//Duplication fd of the standard output
 	int		exit_status;// Value to change with the exit status of the executed pipe or command;

@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 22:11:23 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/18 23:22:33 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/23 00:13:46 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_token	*open_msg_error(t_cmd *cmd, t_token *token)
 			close(token->fd);
 		token = token->next;
 	}
-	cmd->cmds = ft_freetabs(cmd->cmds);
+	//cmd->cmds = ft_freetabs(cmd->cmds);
 	return (token);
 }
 

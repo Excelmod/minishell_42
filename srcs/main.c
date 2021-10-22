@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/19 03:34:18 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/23 00:18:25 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ void	loop(t_shell *shell)
 	line = NULL;
 	while((line = readline("minishell$ ")) != NULL)
 	{
+		if (line[0] == EOF) // ctrl D
+			return ;
+		add_history(line);
 		line = parsing_tokenizer(shell, line); // fonction regroupant toute les fonctions parsing et tokenization,  qui free line et retourne NULL,
-		if (shell->cmd)
-			starting_execution(shell);
+		starting_execution(shell);
 	}
 }
 
