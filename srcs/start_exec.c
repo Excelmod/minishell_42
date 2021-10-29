@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 17:06:37 by lchristo          #+#    #+#             */
-/*   Updated: 2021/10/23 00:20:16 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/29 23:56:34 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int     check_builtin(t_shell *shell, char *str)
         i = builtin_unset(shell, shell->cmd->cmds);
     if (compare(str, "pwd"))
         i = builtin_pwd(shell);
+	if (compare(str, "cd"))
+		i = builtin_cd(shell, shell->cmd->cmds);
     if (i > 0)
         printf("problem\n");
     return (i);
@@ -111,17 +113,12 @@ void    starting_execution(t_shell *shell)
     int i;
 
     //ft_build_tabs(shell);
-    if (shell->cmd->msg_error != NULL)
+    if (shell->cmd && shell->cmd->msg_error != NULL)
     {
         print_error(shell);
         return ;
     }
-    if (compare(shell->cmd->cmds[0], "cd"))
-    {
-        i = builtin_cd(shell, shell->cmd->cmds);
-        return ;
-    }
-    if (compare(shell->cmd->cmds[0], "exit"))
+    if (shell->cmd && shell->cmd->cmds && compare(shell->cmd->cmds[0], "exit"))
         exit (0);
     i = fork();
     if (i == 0)

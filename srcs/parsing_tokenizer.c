@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/03 17:41:03 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/23 00:29:11 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/29 23:48:24 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char	*parsing_tokenizer(t_shell *shell, char *line)
 	if (!error)
 		parsing(shell);
 	free(line);
+	shell->str = NULL;
 	ft_tokenclear(&(shell->tokens));
 	t_cmd *cmd = shell->cmd;
 	printf("\nFonction dans le fichier parsing_tokenizer.c pour afficher les structures commandes\n");

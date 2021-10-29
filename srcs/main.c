@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/23 00:18:25 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/10/29 23:55:36 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,24 @@ void	loop(t_shell *shell)
 		add_history(line);
 		line = parsing_tokenizer(shell, line); // fonction regroupant toute les fonctions parsing et tokenization,  qui free line et retourne NULL,
 		starting_execution(shell);
+		int i = 0;
+		t_cmd	*cmd = shell->cmd;
+		t_cmd	*tmp = NULL;
+		while(cmd)
+		{
+			free(cmd->msg_error);
+			i = 0;
+			while(cmd->cmds && cmd->cmds[i])
+			{
+				free(cmd->cmds[i]);
+				i++;
+			}
+			tmp  = cmd;
+			cmd = cmd->next;
+			free(tmp);
+			tmp = NULL;
+		}
+		shell->cmd = NULL;
 	}
 }
 
