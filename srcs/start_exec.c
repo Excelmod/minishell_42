@@ -26,9 +26,13 @@ int     check_builtin(t_shell *shell, char *str)
     if (compare(str, "unset"))
         i = builtin_unset(shell, shell->cmd->cmds);
     if (compare(str, "pwd"))
-        i = builtin_pwd(shell);
+    {
+        i = builtin_pwd(shell);\
+    }
 	if (compare(str, "cd"))
+    {
 		i = builtin_cd(shell, shell->cmd->cmds);
+    }
     if (i > 0)
         printf("problem\n");
     return (i);
