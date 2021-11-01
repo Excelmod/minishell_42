@@ -22,9 +22,10 @@ void	loop(t_shell *shell)
 	{
 		if (line[0] == EOF) // ctrl D
 			return ;
-		//add_history(line);
+		add_history(line);
 		line = parsing_tokenizer(shell, line); // fonction regroupant toute les fonctions parsing et tokenization,  qui free line et retourne NULL,
-		starting_execution(shell);
+		if (shell->cmd)
+			starting_execution(shell);
 		int i = 0;
 		t_cmd	*cmd = shell->cmd;
 		t_cmd	*tmp = NULL;
@@ -43,8 +44,9 @@ void	loop(t_shell *shell)
 			tmp = NULL;
 		}
 		shell->cmd = NULL;
+		line = readline("minishell$ ");
 	}
-	line = readline("minishell$ ");
+	
 }
 
 int	main(int ac, char **av, char **ap)
