@@ -26,13 +26,13 @@ CC = gcc
 all: libft.a $(NAME)
 
 %.o : %.c
-	gcc -c $(CFLAGS) $(HEADERS) $< -o $@ $(RL) 
+	gcc -c $(CFLAGS) $(HEADERS) $< -o $@
 
 libft.a :
 	cd libft && $(MAKE) && mv libft.a ../
 
 $(NAME): $(OBJS)
-	$(CC) -o $@ $(OBJS) libft.a $(RL) 
+	$(CC) -fsanitize=address -o $@ $(OBJS) libft.a $(RL) 
 
 # Remove all objects, dependencies and executable files generated during the build
 clean:

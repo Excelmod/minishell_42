@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/22 23:32:12 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/02 18:16:27 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void    	print_export(t_shell *shell);
 char		**delete_env(char **ap, char *str);
 void		check_append_env(t_shell *shell, char *str, int l);
 int			ft_strcmp_sep(char *s1, char *s2, char sep);
-void    	starting_execution(t_shell *shell);
+int	    	starting_execution(t_shell *shell);
 void    	display_struct(t_shell *shell);
 int     	compare(char *in, char *out);
 int     	builtin_echo(char **args);// <- echo

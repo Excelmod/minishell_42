@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/29 23:55:36 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/02 18:07:49 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	loop(t_shell *shell)
 				free(cmd->cmds[i]);
 				i++;
 			}
+			close(cmd->fd_in);
+			close(cmd->fd_out);
 			tmp  = cmd;
 			cmd = cmd->next;
 			free(tmp);
