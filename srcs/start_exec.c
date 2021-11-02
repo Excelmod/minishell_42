@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 17:06:37 by lchristo          #+#    #+#             */
-/*   Updated: 2021/11/02 19:02:03 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/02 21:35:05 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int     exec_simple_command(t_shell *shell, t_cmd *cmd)
     return (ret);
 }
 
-int    starting_execution(t_shell *shell)
+int    execution(t_shell *shell)
 {
 	t_cmd	*cmd;
 

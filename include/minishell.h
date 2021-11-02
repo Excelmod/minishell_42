@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/02 19:01:02 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/02 21:34:58 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
@@ -61,8 +62,6 @@ typedef struct s_shell //struture pour minishell il sert a stocke et passer faci
 	char	**env;//tableau de string contenant les variables d'environement.
 	char	**exp;//tableau contenant les valeur d'export non initialisee.
 	char	**path;//tableau de string contenant les chemins de path.
-	int		*tpid;//tableau de pid pour waitpid
-	int		*tpipe;//tableau de pipe pour dup2
 	int		stdin;//Duplication fd of the standard input
 	int		stdout;//Duplication fd of the standard output
 	int		exit_status;// Value to change with the exit status of the executed pipe or command;
@@ -72,46 +71,74 @@ typedef struct s_shell //struture pour minishell il sert a stocke et passer faci
 	t_cmd	*cmd;//pointeur vers la premiere commande.
 }	t_shell;
 
-void		initialization_shell(t_shell *shell, char **ap);
+
+
+
+
+
+
+
+
+
+
+//execution
+int	    	execution(t_shell *shell);
 int			check_path(char *path, t_shell *shell);
 char		*path_join(char *s1, char *s2);
 void		search_cmd(t_shell *shell, char *cmd);
-void		exit_message_error(t_shell *shell, char *msg);
-void		ft_tokenclear(t_token **lst);
-char		**ft_freetabs(char **t);
-char    	*ft_strjoin_part(char *s1, char *spart, int l);
-char		*search_env(char **env, char *search);
-char 		*cur_dir_name(void);
-void    	handle_prompt(void);
-void    	handle_prompt_heredoc(void);
-void		handle_error_heredoc(t_shell *shell, int count);
-void		exit_free(t_shell *shell);
+//initialization
+void		initialization_shell(t_shell *shell, char **ap);
+// utils
+void    	display_struct(t_shell *shell);
+int     	compare(char *in, char *out);
 int			get_next_line(int fd, char** line);
+// token utils
 t_token		*ft_tokennew(enum e_types type, char *line);
 void		ft_token_add_back(t_token **atoken, t_token *new);
 t_token		*ft_tokenlast(t_token *token);
-char		*env_value(char **env, char *search);
-void		message_error(char *msg);
+// tokenizer
 int			tokenizer(t_shell *shell, char *line);
 int			tokenizer_text(t_shell *shell, int *ind, char *str);
+char    	*ft_strjoin_part(char *s1, char *spart, int l);
+// expansion env
 char		*expand_exit_status(t_shell *shell, int *ind, char *l);
 char		*expand_var(t_shell *shell, int *ind, char *str, char *l);
 char		*expand_var_quote(t_shell *shell, int *ind, char *str, char *l);
+// parsing
+char		*parsing_tokenizer(t_shell *shell , char *line);
+int 		check_syntax_error(t_shell *shell, int error);
 void		parsing(t_shell *shell);
 int			parsing_io_files(t_cmd *cmd, t_token *token);
-int 		check_syntax_error(t_shell *shell, int error);
-char		*parsing_tokenizer(t_shell *shell , char *line);
+// heredoc handling
+void    	handle_prompt_heredoc(void);
+void		handle_error_heredoc(t_shell *shell, int count);
+// exit , error and free
+void		exit_message_error(t_shell *shell, char *msg);
+char		**ft_freetabs(char **t);
+void		ft_tokenclear(t_token **lst);
+void		exit_free(t_shell *shell);
+void		message_error(char *msg);
+// echo
+int     	builtin_echo(char **args);
+// env
+int			builtin_env(t_shell *shell);
+char		*env_value(char **env, char *search);
+char		*search_env(char **env, char *search);
+// export
+int			builtin_export(t_shell *shell, char **args);
 void    	print_export(t_shell *shell);
-char		**delete_env(char **ap, char *str);
 void		check_append_env(t_shell *shell, char *str, int l);
 int			ft_strcmp_sep(char *s1, char *s2, char sep);
-int	    	starting_execution(t_shell *shell);
-void    	display_struct(t_shell *shell);
-int     	compare(char *in, char *out);
-int     	builtin_echo(char **args);// <- echo
-int			builtin_env(t_shell *shell);// <- env
-int			builtin_export(t_shell *shell, char **args);// <- export
-int			builtin_unset(t_shell *shell, char **args); // <-unset
-int			builtin_cd(t_shell *shell, char **arg);// <-cd
-int     	builtin_pwd(t_shell *shell);// <-pwd
+// unset
+int			builtin_unset(t_shell *shell, char **args);
+char		**delete_env(char **ap, char *str);
+// cd
+int			builtin_cd(t_shell *shell, char **arg);
+char 		*cur_dir_name(void);
+//pwd
+int     	builtin_pwd(t_shell *shell);
+// signal
+void		signal_input(void);
+void		signal_process(void);
+void		signal_ignore(void);
 #endif

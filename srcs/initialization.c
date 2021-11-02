@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 22:47:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/19 03:35:11 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/02 21:36:43 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,45 @@ void	initialization_pwd(t_shell *shell)
 	ft_freetabs(tab);
 }
 
+void	redisplay_prompt(int signal)
+{
+	(void)signal;
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
+
+void	interrupt_process(int signal)
+{
+	(void)signal;
+	write(1, "\n", 1);
+}
+
+void	quit_process(int signal)
+{
+	(void)signal;
+	ft_putstr_fd("Quit (core dumped)\n", 1);
+}
+
+void	signal_input(void)
+{
+	signal(SIGINT, redisplay_prompt);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	signal_process(void)
+{
+	signal(SIGINT, interrupt_process);
+	signal(SIGQUIT, quit_process);
+}
+
+void	signal_ignore(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
 void	initialization_shell(t_shell *shell, char **ap)
 {
 	shell->env = new_env(ap);
@@ -118,6 +157,7 @@ void	initialization_shell(t_shell *shell, char **ap)
 	shell->path = ft_split(search_env(shell->env, "PATH") + 5, ':');
 	shell->stdin = dup(0);
 	shell->stdout = dup(1);
+	signal_input();
 	initialization_pwd(shell);
 	initialization_shlvl(shell);
 	shell->exit_status = 0;

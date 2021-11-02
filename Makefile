@@ -13,11 +13,12 @@ SOURCES =  	srcs/check_path.c		srcs/get_next_line.c 		srcs/parsing.c 				srcs/ex
 			srcs/handle_heredoc.c	srcs/tokenizer_text.c		srcs/expand_var.c								\
 # Define objects for all sources
 OBJS = $(SOURCES:.c=.o)
-RL = -lreadline
+RL = -lreadline -L /Users/$(USER)/.brew/opt/readline/lib
+		
 
 # Define headers files
 CFLAGS = -Wall -Werror -Wextra
-HEADERS = -I include -I libft
+HEADERS = -I include -I libft -I /Users/$(USER)/.brew/opt/readline/include
 
 # Name the compiler
 CC = gcc
@@ -26,13 +27,13 @@ CC = gcc
 all: libft.a $(NAME)
 
 %.o : %.c
-	gcc -c $(CFLAGS) $(HEADERS) $< -o $@
+	gcc -c $(CFLAGS) $(HEADERS) $< -o $@ 
 
 libft.a :
 	cd libft && $(MAKE) && mv libft.a ../
 
 $(NAME): $(OBJS)
-	$(CC) -fsanitize=address -o $@ $(OBJS) libft.a $(RL) 
+	$(CC) -fsanitize=address -o $@ $(OBJS) libft.a $(RL)
 
 # Remove all objects, dependencies and executable files generated during the build
 clean:
