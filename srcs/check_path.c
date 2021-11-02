@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 17:28:17 by user42            #+#    #+#             */
-/*   Updated: 2021/10/18 23:57:32 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/02 19:00:02 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,15 @@ char	*path_join(char *s1, char *s2)
 	return (path);
 }
 
-int	check_path(char *path, char *cmd)
+int	check_path(char *path, t_shell *shell)
 {
 	char	*str;
 
-	str = path_join(path, cmd);
+	str = path_join(path, shell->str);
 	if (access(str, F_OK) == 0)
 	{
-		free(cmd);
-		cmd = ft_strdup(str);
+		free(shell->str);
+		shell->str = ft_strdup(str);
 		if (access(str, X_OK) == 0)
 		{
 			free(str);

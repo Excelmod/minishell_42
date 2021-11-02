@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 17:06:37 by lchristo          #+#    #+#             */
-/*   Updated: 2021/11/02 18:20:05 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/02 19:02:03 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,40 +34,35 @@ int     check_builtin(t_shell *shell, char *str)
     return (i);
 }
 
-int     exec_simple_command(t_shell *shell)
+int     exec_simple_command(t_shell *shell, t_cmd *cmd)
 {
-    int i;
     int pid;
     int ret;
-    char *str;
 
-    i = 0;
 	dup2(shell->cmd->fd_in, 0);
 	dup2(shell->cmd->fd_out, 1);
     ret = check_builtin(shell, shell->cmd->cmds[0]);
 	dup2(shell->stdin, 0);
 	dup2(shell->stdout, 1);
     if (ret != -1)
-    {
         return(ret);
-    }
-    pid = fork();
-    if (!pid)
-    {
-        str = ft_strjoin("/", shell->cmd->cmds[0]);
-        while (shell->path[i] != NULL)
-        {
-            execve(ft_strjoin(shell->path[i], str), shell->cmd->cmds, shell->env);
-            i++;
-        }
-        execve(ft_strjoin("./", str), shell->cmd->cmds, shell->env);
-        printf("minishell: %s: command not found\n", shell->cmd->cmds[0]);
-        exit (1);
-    }
-    else
-    {
-        waitpid( pid, &ret, 0);
-    }
+	search_cmd(shell, cmd->cmds[0]);
+	if (shell->str)
+	{
+    	pid = fork();
+    	if (!pid)
+    	{
+    	    if (execve(shell->str, cmd->cmds, shell->env) == -1)
+			{
+				perror("minishell: ");
+				return (0) ;
+			}
+    	}
+    	else
+    	    waitpid( pid, &ret, 0);
+	}
+	free(shell->str);
+	shell->str = NULL;
     return (ret);
 }
 
@@ -82,8 +77,8 @@ int    starting_execution(t_shell *shell)
         return (0);
     }
     if (cmd->cmds && cmd->next == NULL)
-        return (exec_simple_command(shell));
+        return (exec_simple_command(shell, cmd));
 	else if (cmd->cmds) 
-		return (exec_simple_command(shell)); // a changer par la fonction pour gerer le cas de plusieurs commandes avec pipes.
+		return (exec_simple_command(shell, cmd)); // a changer par la fonction pour gerer le cas de plusieurs commandes avec pipes.
 	return (0);
 }
