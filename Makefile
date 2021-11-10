@@ -10,7 +10,7 @@ SOURCES =  	srcs/check_path.c		srcs/get_next_line.c 		srcs/parsing.c 				srcs/ex
 			srcs/env.c 	  			srcs/parsing_tokenizer.c	srcs/echo.c	  				srcs/builtin_pwd.c	\
 			srcs/print_export.c		srcs/unset.c				srcs/initialization.c		srcs/append_env.c	\
 			srcs/display_struct.c	srcs/start_exec.c			srcs/compare.c				srcs/parsing_io.c	\
-			srcs/handle_heredoc.c	srcs/tokenizer_text.c		srcs/expand_var.c								\
+			srcs/handle_heredoc.c	srcs/tokenizer_text.c		srcs/expand_var.c			srcs/signal.c		\
 # Define objects for all sources
 OBJS = $(SOURCES:.c=.o)
 RL = -lreadline -L /Users/$(USER)/.brew/opt/readline/lib

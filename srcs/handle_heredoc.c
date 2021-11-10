@@ -31,7 +31,10 @@ t_list	*get_heredoc_lines(char *cmp)
 	while (get_next_line(0, &line))
 	{
 		if (ft_strncmp(line, cmp, l + 1) == 0)
+		{
+			free(line);
 			break ;
+		}
 		ft_lstadd_back(&lst, ft_lstnew((void *)line));
 		handle_prompt_heredoc();
 	}

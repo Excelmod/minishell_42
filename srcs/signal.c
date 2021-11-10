@@ -30,7 +30,7 @@ void	interrupt_process(int signal)
 void	quit_process(int signal)
 {
 	(void)signal;
-	ft_printf("Quit (core dumped)\n");
+	printf("Quit (core dumped)\n");
 }
 
 void	signal_input(void)

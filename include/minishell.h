@@ -72,20 +72,11 @@ typedef struct s_shell //struture pour minishell il sert a stocke et passer faci
 }	t_shell;
 
 
-
-
-
-
-
-
-
-
-
 //execution
 int	    	execution(t_shell *shell);
-int			check_path(char *path, t_shell *shell);
+int			check_path(char *path, char	*cmd, char **path_cmd);
 char		*path_join(char *s1, char *s2);
-void		search_cmd(t_shell *shell, char *cmd);
+int			search_cmd(t_shell *shell, char *cmd, char **path_cmd);
 //initialization
 void		initialization_shell(t_shell *shell, char **ap);
 // utils

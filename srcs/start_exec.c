@@ -36,33 +36,39 @@ int     check_builtin(t_shell *shell, char *str)
 
 int     exec_simple_command(t_shell *shell, t_cmd *cmd)
 {
-    int pid;
-    int ret;
+    int     pid;
+    char    *path_cmd;
+    int     ret;
 
 	dup2(shell->cmd->fd_in, 0);
 	dup2(shell->cmd->fd_out, 1);
     ret = check_builtin(shell, shell->cmd->cmds[0]);
-	dup2(shell->stdin, 0);
-	dup2(shell->stdout, 1);
     if (ret != -1)
+    {
+        dup2(shell->stdin, 0);
+	    dup2(shell->stdout, 1);
         return(ret);
-	search_cmd(shell, cmd->cmds[0]);
-	if (shell->str)
+    }
+    signal_process();
+	if (search_cmd(shell, cmd->cmds[0], &path_cmd))
 	{
     	pid = fork();
     	if (!pid)
     	{
-    	    if (execve(shell->str, cmd->cmds, shell->env) == -1)
+    	    if (execve(path_cmd, cmd->cmds, shell->env) == -1)
 			{
 				perror("minishell: ");
 				return (0) ;
 			}
     	}
     	else
-    	    waitpid( pid, &ret, 0);
+        {
+            waitpid( pid, &ret, 0);
+        }
 	}
-	free(shell->str);
-	shell->str = NULL;
+	free(path_cmd);
+    dup2(shell->stdin, 0);
+	dup2(shell->stdout, 1);
     return (ret);
 }
 
