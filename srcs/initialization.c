@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adu-pavi <adu-pavi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 22:47:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/02 21:36:43 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/10 17:34:08 by adu-pavi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,21 @@ char	**new_env(char **ap)
 	return (new);
 }
 
+void	init_fd_to_zero(t_shell *shell)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < 100)
+	{
+		j = 0;
+		while (j < 2)
+			shell->pipe_fd[i][j++] = 0;
+		i++;
+	}
+}
+
 void	initialization_shlvl(t_shell *shell)
 {
 	char	*str;
@@ -38,6 +53,7 @@ void	initialization_shlvl(t_shell *shell)
 	char	**tab;
 
 	str = env_value(shell->env, "SHLVL");
+	init_fd_to_zero(shell);
 	if (str)
 	{
 		nb = ft_atoi(str);
@@ -113,9 +129,9 @@ void	redisplay_prompt(int signal)
 {
 	(void)signal;
 	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
+	// rl_replace_line("", 0);
+	// rl_on_new_line();
+	// rl_redisplay();
 }
 
 void	interrupt_process(int signal)

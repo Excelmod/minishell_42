@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adu-pavi <adu-pavi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/02 21:34:58 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/10 18:13:51 by adu-pavi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef	struct	s_cmd //struture pour les commande chaque commande succesives est
 
 typedef struct s_shell //struture pour minishell il sert a stocke et passer facilement des donnees en argument.
 {
+	int		pipe_fd[100][2];
 	char	**env;//tableau de string contenant les variables d'environement.
 	char	**exp;//tableau contenant les valeur d'export non initialisee.
 	char	**path;//tableau de string contenant les chemins de path.
@@ -70,16 +71,6 @@ typedef struct s_shell //struture pour minishell il sert a stocke et passer faci
 	t_token	*tokens;//utile que dans la partie parsing
 	t_cmd	*cmd;//pointeur vers la premiere commande.
 }	t_shell;
-
-
-
-
-
-
-
-
-
-
 
 //execution
 int	    	execution(t_shell *shell);
