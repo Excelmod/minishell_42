@@ -5,16 +5,16 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: adu-pavi <adu-pavi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/30 17:06:37 by lchristo          #+#    #+#             */
-/*   Updated: 2021/11/10 18:15:00 by adu-pavi         ###   ########.fr       */
+/*   Created: 2021/11/10 18:58:01 by adu-pavi          #+#    #+#             */
+/*   Updated: 2021/11/11 12:13:33 by adu-pavi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int check_builtin(t_shell *shell, char *str)
+int	check_builtin(t_shell *shell, char *str)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	if (compare(str, "echo"))
@@ -90,6 +90,7 @@ int	exec_multiple_cmd_1(t_shell *shell, t_cmd *cmd, int *i)
 			else
 				waitpid(pid, &ret, 0);
 		}
+		waitpid(pid, &ret, 0);
 		cmd = cmd->next;
 		i++;
 	}
