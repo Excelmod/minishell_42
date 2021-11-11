@@ -54,8 +54,9 @@ void	exit_free(t_shell *shell)
 	shell->env = ft_freetabs(shell->env);
 	shell->env = ft_freetabs(shell->exp);
 	free(shell->pwd);
-	//free(shell->str);
+	free(shell->str);
 	free(shell);
+	rl_clear_history();
 	exit(0);
 }
 
