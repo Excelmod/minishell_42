@@ -12,6 +12,31 @@
 
 #include "minishell.h"
 
+void	free_cmd(t_cmd *cmd)
+{
+	int		i;
+	t_cmd	*tmp;
+
+	tmp = NULL;
+	while(cmd)
+	{
+		free(cmd->msg_error);
+		i = 0;
+		while(cmd->cmds && cmd->cmds[i])
+		{
+			free(cmd->cmds[i]);
+			i++;
+		}
+		free(cmd->cmds);
+		close(cmd->fd_in);
+		close(cmd->fd_out);
+		tmp  = cmd;
+		cmd = cmd->next;
+		free(tmp);
+		tmp = NULL;
+	}
+}
+
 void	ft_tokenclear(t_token **lst)
 {
 	t_token	*pnt1;
@@ -47,9 +72,12 @@ char	**ft_freetabs(char **t)
 	return (NULL);
 }
 
-void	exit_free(t_shell *shell)
+void	exit_free(t_shell *shell, int status)
 {
+	dup2(shell->stdin, 0);
+	dup2(shell->stdout, 1);
 	ft_tokenclear(&(shell->tokens));
+	free_cmd(shell->cmd);
 	shell->path = ft_freetabs(shell->path);
 	shell->env = ft_freetabs(shell->env);
 	shell->env = ft_freetabs(shell->exp);
@@ -57,16 +85,10 @@ void	exit_free(t_shell *shell)
 	free(shell->str);
 	free(shell);
 	rl_clear_history();
-	exit(0);
+	exit(status);
 }
 
 void	message_error(char *msg)
 {
 	ft_putendl_fd(msg, 2);
-}
-
-void	exit_message_error(t_shell *shell, char *msg)
-{
-	ft_putendl_fd(msg, 2);
-	exit_free(shell);
 }

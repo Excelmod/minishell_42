@@ -24,24 +24,5 @@ char	*parsing_tokenizer(t_shell *shell, char *line)
 	free(line);
 	shell->str = NULL;
 	ft_tokenclear(&(shell->tokens));
-	t_cmd *cmd = shell->cmd;
-	printf("\nFonction dans le fichier parsing_tokenizer.c pour afficher les structures commandes\n");
-	printf("\nDEBUT\n\n");
-	while (cmd)
-	{
-		int i = 0;
-		printf("Nouvelle CMD:\n");
-		while(cmd->cmds && cmd->cmds[i])
-		{
-			printf("cmd%d: '%s'\n", i+1, cmd->cmds[i]);
-			i++;
-		}
-		printf("\nmsg_error: '%s'\n", cmd->msg_error);
-		printf("fd_in: %d\nfd_out: %d\n", cmd->fd_in, cmd->fd_out);
-		cmd = cmd->next;
-		if (cmd)
-			printf("\nPIPE\n\n");
-	}
-	printf("\nFIN\n\n");
 	return (NULL);
 }

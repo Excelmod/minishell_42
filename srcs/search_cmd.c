@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/22 00:44:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/02 19:01:26 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/13 02:20:10 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ int	search_cmd(t_shell *shell, char *cmd, char **path_cmd)
 	}
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd, 2);
-
-
 	if (*path_cmd)
 		ft_putendl_fd(": Permission denied", 2);
 	else

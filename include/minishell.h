@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/02 21:34:58 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/13 02:15:25 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,12 @@ int			parsing_io_files(t_cmd *cmd, t_token *token);
 void    	handle_prompt_heredoc(void);
 void		handle_error_heredoc(t_shell *shell, int count);
 // exit , error and free
-void		exit_message_error(t_shell *shell, char *msg);
+int    		exit_shell(t_shell *shell, char **av);
+int    		exit_pipe(t_shell *shell, char **av);
 char		**ft_freetabs(char **t);
+void		free_cmd(t_cmd *cmd);
 void		ft_tokenclear(t_token **lst);
-void		exit_free(t_shell *shell);
+void		exit_free(t_shell *shell, int status);
 void		message_error(char *msg);
 // echo
 int     	builtin_echo(char **args);

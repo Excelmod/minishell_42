@@ -6,13 +6,13 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 17:06:37 by lchristo          #+#    #+#             */
-/*   Updated: 2021/11/02 21:35:05 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/13 02:26:25 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int     check_builtin(t_shell *shell, char *str)
+int     check_builtin_pipe(t_shell *shell, char *str)
 {
     int i;
 
@@ -30,7 +30,29 @@ int     check_builtin(t_shell *shell, char *str)
 	else if (compare(str, "cd"))
 		i = builtin_cd(shell, shell->cmd->cmds);
 	else if (compare(str, "exit"))
-        exit (0);
+        i = exit_pipe(shell, shell->cmd->cmds);
+    return (i);
+}
+
+int     check_builtin_simple(t_shell *shell, char *str)
+{
+    int i;
+
+    i = -1;
+    if (compare(str, "echo"))
+        i = builtin_echo(shell->cmd->cmds);
+    else if (compare(str, "env"))
+        i = builtin_env(shell);
+    else if (compare(str, "export"))
+        i = builtin_export(shell, shell->cmd->cmds);
+    else if (compare(str, "unset"))
+        i = builtin_unset(shell, shell->cmd->cmds);
+    else if (compare(str, "pwd"))
+        i = builtin_pwd(shell);
+	else if (compare(str, "cd"))
+		i = builtin_cd(shell, shell->cmd->cmds);
+	else if (compare(str, "exit"))
+        i = exit_shell(shell, shell->cmd->cmds);
     return (i);
 }
 
@@ -40,10 +62,10 @@ int     exec_simple_command(t_shell *shell, t_cmd *cmd)
     char    *path_cmd;
     int     ret;
 
+    ret = 0;
 	dup2(shell->cmd->fd_in, 0);
 	dup2(shell->cmd->fd_out, 1);
-    ret = check_builtin(shell, shell->cmd->cmds[0]);
-    if (ret != -1)
+    if (check_builtin_simple(shell, shell->cmd->cmds[0]) != -1)
     {
         dup2(shell->stdin, 0);
 	    dup2(shell->stdout, 1);
@@ -62,9 +84,7 @@ int     exec_simple_command(t_shell *shell, t_cmd *cmd)
 			}
     	}
     	else
-        {
             waitpid( pid, &ret, 0);
-        }
 	}
 	free(path_cmd);
     dup2(shell->stdin, 0);
