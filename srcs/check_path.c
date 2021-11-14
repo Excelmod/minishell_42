@@ -57,15 +57,14 @@ char	*path_join(char *s1, char *s2)
 	return (path);
 }
 
-int	check_path(char *path, t_shell *shell)
+int	check_path(char *path, char	*cmd, char **path_cmd)
 {
 	char	*str;
 
-	str = path_join(path, shell->str);
+	str = path_join(path, cmd);
 	if (access(str, F_OK) == 0)
-	{
-		free(shell->str);
-		shell->str = ft_strdup(str);
+	{	
+		*path_cmd = ft_strdup(str);
 		if (access(str, X_OK) == 0)
 		{
 			free(str);
@@ -73,5 +72,6 @@ int	check_path(char *path, t_shell *shell)
 		}
 	}
 	free(str);
+	str = NULL;
 	return (0);
 }

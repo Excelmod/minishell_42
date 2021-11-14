@@ -6,31 +6,33 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/22 00:44:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/02 19:01:26 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/13 02:20:10 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	search_cmd(t_shell *shell, char *cmd)
+int	search_cmd(t_shell *shell, char *cmd, char **path_cmd)
 {
 	int	i;
 
 	i = 0;
-	shell->str = ft_strdup(cmd);
-	if (check_path(".", shell))
-		return ;
+	*path_cmd = NULL;
+	if (check_path(".", cmd, path_cmd))
+		return (1);
 	while (shell->path[i])
 	{
-		if (check_path(shell->path[i], shell))
-			return ;
+		if (check_path(shell->path[i], cmd, path_cmd))
+			return (1);
 		i++;
 	}
-	if (shell->str)
-		ft_putstr_fd("minishell: Permission denied: ", 2);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	if (*path_cmd)
+		ft_putendl_fd(": Permission denied", 2);
 	else
-		ft_putstr_fd("minishell: Command not found: ", 2);
-	ft_putendl_fd(shell->str, 2);
-	free(shell->str);
-	shell->str = NULL;
+		ft_putendl_fd(": Command not found", 2);
+	free(*path_cmd);
+	*path_cmd = NULL;
+	return (0);
 }

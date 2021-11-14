@@ -47,7 +47,7 @@ t_token	*open_msg_error(t_cmd *cmd, t_token *token)
 			close(token->fd);
 		token = token->next;
 	}
-	cmd->cmds = ft_freetabs(cmd->cmds);
+	//cmd->cmds = ft_freetabs(cmd->cmds);
 	return (token);
 }
 

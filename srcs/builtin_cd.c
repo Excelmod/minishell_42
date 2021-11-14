@@ -112,12 +112,10 @@ int	builtin_cd(t_shell *shell, char **arg)
 
 	if (arg && (arg[1] || search_env(shell->env, "HOME")))
 	{
-		printf("test\n");
 		if (arg[1])
 			path = path_cd(shell, arg);
 		else
 			path = env_value(shell->env, "HOME");
-		printf("path = %s\n", path);
 		if (chdir(path))
 		{
 			ft_putstr_fd("bash: cd: ", 2);
@@ -127,7 +125,6 @@ int	builtin_cd(t_shell *shell, char **arg)
 		}
 		else
 		{
-			printf("path = %s\n", path);
 			change_pwd(shell, path);
 		}
 	}

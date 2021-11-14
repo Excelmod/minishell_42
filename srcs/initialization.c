@@ -20,7 +20,7 @@ char	**new_env(char **ap)
 	i = 0;
 	while (ap && ap[i] != NULL)
 		i++;
-	new = malloc(sizeof(char *) * i + 1);
+	new = malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while (ap && ap[i] != NULL)
 	{
@@ -107,45 +107,6 @@ void	initialization_pwd(t_shell *shell)
 	builtin_unset(shell, tab);
 	builtin_export(shell, tab);
 	ft_freetabs(tab);
-}
-
-void	redisplay_prompt(int signal)
-{
-	(void)signal;
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-}
-
-void	interrupt_process(int signal)
-{
-	(void)signal;
-	write(1, "\n", 1);
-}
-
-void	quit_process(int signal)
-{
-	(void)signal;
-	ft_putstr_fd("Quit (core dumped)\n", 1);
-}
-
-void	signal_input(void)
-{
-	signal(SIGINT, redisplay_prompt);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	signal_process(void)
-{
-	signal(SIGINT, interrupt_process);
-	signal(SIGQUIT, quit_process);
-}
-
-void	signal_ignore(void)
-{
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
 }
 
 void	initialization_shell(t_shell *shell, char **ap)

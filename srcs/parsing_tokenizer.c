@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/03 17:41:03 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/29 23:48:24 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/14 15:04:27 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*parsing_tokenizer(t_shell *shell, char *line)
 	free(line);
 	shell->str = NULL;
 	ft_tokenclear(&(shell->tokens));
-	t_cmd *cmd = shell->cmd;
+	/*t_cmd *cmd = shell->cmd;
 	printf("\nFonction dans le fichier parsing_tokenizer.c pour afficher les structures commandes\n");
 	printf("\nDEBUT\n\n");
 	while (cmd)
@@ -36,12 +36,12 @@ char	*parsing_tokenizer(t_shell *shell, char *line)
 			printf("cmd%d: '%s'\n", i+1, cmd->cmds[i]);
 			i++;
 		}
-		printf("\nmsg_error: '%s'\n", cmd->msg_error);
+		printf("%s", shell->cmd->msg_error);
 		printf("fd_in: %d\nfd_out: %d\n", cmd->fd_in, cmd->fd_out);
 		cmd = cmd->next;
 		if (cmd)
 			printf("\nPIPE\n\n");
 	}
-	printf("\nFIN\n\n");
+	printf("\nFIN\n\n");*/	
 	return (NULL);
 }

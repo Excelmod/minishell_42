@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/02 21:35:14 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/14 14:58:19 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,32 +20,15 @@ void	loop(t_shell *shell)
 	line = readline("minishell$ ");
 	while(line != NULL)
 	{
-		if (line[0] == EOF) // ctrl D
-			return ;
 		add_history(line);
-		line = parsing_tokenizer(shell, line); // fonction regroupant toute les fonctions parsing et tokenization,  qui free line et retourne NULL,
+		line = parsing_tokenizer(shell, line);
 		if (shell->cmd)
-			execution(shell);
-		int i = 0;
-		t_cmd	*cmd = shell->cmd;
-		t_cmd	*tmp = NULL;
-		while(cmd)
 		{
-			free(cmd->msg_error);
-			i = 0;
-			while(cmd->cmds && cmd->cmds[i])
-			{
-				free(cmd->cmds[i]);
-				i++;
-			}
-			close(cmd->fd_in);
-			close(cmd->fd_out);
-			tmp  = cmd;
-			cmd = cmd->next;
-			free(tmp);
-			tmp = NULL;
+			execution(shell);
 		}
+		free_cmd(shell->cmd);
 		shell->cmd = NULL;
+		signal_input();
 		line = readline("minishell$ ");
 	}
 	
@@ -53,18 +36,18 @@ void	loop(t_shell *shell)
 
 int	main(int ac, char **av, char **ap)
 {
-	t_shell	*sh;
+	t_shell	*shell;
 
-	sh = NULL;
+	shell = NULL;
 	if (ac && av)
-	sh = malloc(sizeof(t_shell));
-	if (sh == NULL)
+	shell = malloc(sizeof(t_shell));
+	if (shell == NULL)
 	{
 		perror("shell");
 		exit(0);
 	}
-	initialization_shell(sh, ap);
-	loop(sh);
-	exit_free(sh);
+	initialization_shell(shell, ap);
+	loop(shell);
+	exit_free(shell, 0);
 	return (0);
 }
