@@ -150,6 +150,7 @@ void     exec_pipe(t_shell *shell, t_cmd *cmd, t_context *ctx)
         exec_pipe(shell, cmd->next, &new_ctx);
     }
     exec_command(shell, cmd, ctx);
+	close(ctx->fd_close);
     close(p[0]);
 	close(p[1]);
 }
@@ -162,6 +163,7 @@ void    exec_multiple_cmd(t_shell *shell, t_cmd *cmd)
     ctx.fd_out = shell->stdout;
     ctx.fd_close = -1;
     exec_pipe(shell, cmd, &ctx);
+	wait(NULL);
 	wait(NULL);
 	wait(NULL);
 }
