@@ -6,31 +6,31 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 17:06:37 by lchristo          #+#    #+#             */
-/*   Updated: 2021/11/13 02:26:25 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/14 03:16:53 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int     check_builtin_pipe(t_shell *shell, char *str)
+int     check_builtin_pipe(t_shell *shell, t_cmd *cmd, char *str)
 {
     int i;
 
     i = -1;
     if (compare(str, "echo"))
-        i = builtin_echo(shell->cmd->cmds);
+        i = builtin_echo(cmd->cmds);
     else if (compare(str, "env"))
         i = builtin_env(shell);
     else if (compare(str, "export"))
-        i = builtin_export(shell, shell->cmd->cmds);
+        i = builtin_export(shell, cmd->cmds);
     else if (compare(str, "unset"))
-        i = builtin_unset(shell, shell->cmd->cmds);
+        i = builtin_unset(shell, cmd->cmds);
     else if (compare(str, "pwd"))
         i = builtin_pwd(shell);
 	else if (compare(str, "cd"))
-		i = builtin_cd(shell, shell->cmd->cmds);
+		i = builtin_cd(shell, cmd->cmds);
 	else if (compare(str, "exit"))
-        i = exit_pipe(shell, shell->cmd->cmds);
+        i = exit_pipe(shell, cmd->cmds);
     return (i);
 }
 
@@ -56,55 +56,126 @@ int     check_builtin_simple(t_shell *shell, char *str)
     return (i);
 }
 
-int     exec_simple_command(t_shell *shell, t_cmd *cmd)
+void	exec_simple_command(t_shell *shell, t_cmd *cmd)
 {
     int     pid;
     char    *path_cmd;
     int     ret;
 
     ret = 0;
+	printf("%s\n", shell->cmd->msg_error);
+    if (shell->cmd->msg_error != NULL)
+    {
+        ft_putendl_fd(shell->cmd->msg_error, 2);
+		shell->exit_status = 1;
+        return;
+    }
 	dup2(shell->cmd->fd_in, 0);
 	dup2(shell->cmd->fd_out, 1);
-    if (check_builtin_simple(shell, shell->cmd->cmds[0]) != -1)
+	ret = check_builtin_simple(shell, shell->cmd->cmds[0]);
+    if (ret == -1)
     {
-        dup2(shell->stdin, 0);
-	    dup2(shell->stdout, 1);
-        return(ret);
-    }
-    signal_process();
-	if (search_cmd(shell, cmd->cmds[0], &path_cmd))
-	{
-    	pid = fork();
-    	if (!pid)
-    	{
-    	    if (execve(path_cmd, cmd->cmds, shell->env) == -1)
+    	signal_process();
+		if (search_cmd(shell, cmd->cmds[0], &path_cmd))
+		{
+    		pid = fork();
+    		if (!pid)
+    		{
+    		    if (execve(path_cmd, cmd->cmds, shell->env) == -1)
+				{
+					perror("minishell: ");
+					ret = errno;
+				}
+    		}
+    		else
 			{
-				perror("minishell: ");
-				return (0) ;
+				waitpid( pid, &ret, 0);
 			}
-    	}
-    	else
-            waitpid( pid, &ret, 0);
-	}
-	free(path_cmd);
-    dup2(shell->stdin, 0);
-	dup2(shell->stdout, 1);
-    return (ret);
+		}
+		free(path_cmd);
+    }
+    shell->exit_status = ret;
 }
 
-int    execution(t_shell *shell)
+void	exec_command(t_shell *shell, t_cmd *cmd, t_context *ctx)
+{
+    int     pid;
+    char    *path_cmd;
+    int     ret;
+
+    ret = 0;
+	pid = fork();
+	if (!pid)
+	{
+		dup2(ctx->fd_out, 1);
+		dup2(ctx->fd_in, 0);
+		close(ctx->fd_close);
+		if (cmd->msg_error != NULL)
+    	{
+    	    ft_putendl_fd(cmd->msg_error, 2);
+			exit(1);
+    	}
+		dup2(cmd->fd_in, 0);
+		dup2(cmd->fd_out, 1);
+		ret = check_builtin_pipe(shell, cmd, cmd->cmds[0]);
+    	if (ret == -1)
+    	{
+    		signal_process();
+			if (search_cmd(shell, cmd->cmds[0], &path_cmd))
+			{
+    		    if (execve(path_cmd, cmd->cmds, shell->env) == -1)
+				{
+					perror("minishell: ");
+					ret = errno;
+				}
+			}
+			free(path_cmd);
+    	}
+		exit(ret);
+	}
+}
+
+void     exec_pipe(t_shell *shell, t_cmd *cmd, t_context *ctx)
+{
+    int			p[2];
+    t_context	new_ctx;
+
+	pipe(p);
+    if (cmd->next)
+    {
+        new_ctx = *ctx;
+        new_ctx.fd_in = p[0];
+		ctx->fd_out = p[1];
+		ctx->fd_close = p[0];
+        new_ctx.fd_close = p[1];
+        exec_pipe(shell, cmd->next, &new_ctx);
+    }
+    exec_command(shell, cmd, ctx);
+    close(p[0]);
+	close(p[1]);
+}
+
+void    exec_multiple_cmd(t_shell *shell, t_cmd *cmd)
+{
+    t_context	ctx;
+
+    ctx.fd_in = shell->stdin;
+    ctx.fd_out = shell->stdout;
+    ctx.fd_close = -1;
+    exec_pipe(shell, cmd, &ctx);
+	wait(NULL);
+	wait(NULL);
+}
+
+void    execution(t_shell *shell)
 {
 	t_cmd	*cmd;
 
 	cmd = shell->cmd;
-    if (cmd->msg_error != NULL)
-    {
-        ft_putendl_fd(shell->cmd->msg_error, 2);
-        return (0);
-    }
     if (cmd->cmds && cmd->next == NULL)
-        return (exec_simple_command(shell, cmd));
+        exec_simple_command(shell, cmd);
 	else if (cmd->cmds) 
-		return (exec_simple_command(shell, cmd)); // a changer par la fonction pour gerer le cas de plusieurs commandes avec pipes.
-	return (0);
+		exec_multiple_cmd(shell, cmd);
+	dup2(shell->stdin, 0);
+	dup2(shell->stdout, 1);
 }

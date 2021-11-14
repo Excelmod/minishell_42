@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/13 02:15:25 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/13 23:37:55 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,13 @@ enum e_types //enumeration pour les different type de token utile que dans la pa
 
 typedef	struct	s_token t_token;
 typedef	struct	s_cmd t_cmd;
+
+typedef struct s_context
+{
+    int	fd_in;
+    int	fd_out;
+    int	fd_close;
+}   t_context;
 
 typedef	struct	s_token //struture pour les token n'est utile que pour le parsing.
 {
@@ -73,7 +80,7 @@ typedef struct s_shell //struture pour minishell il sert a stocke et passer faci
 
 
 //execution
-int	    	execution(t_shell *shell);
+void	   	execution(t_shell *shell);
 int			check_path(char *path, char	*cmd, char **path_cmd);
 char		*path_join(char *s1, char *s2);
 int			search_cmd(t_shell *shell, char *cmd, char **path_cmd);
