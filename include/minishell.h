@@ -6,7 +6,7 @@
 /*   By: adu-pavi <adu-pavi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/10 18:13:51 by adu-pavi         ###   ########.fr       */
+/*   Updated: 2021/11/14 17:46:11 by adu-pavi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,12 @@ typedef	struct	s_token //struture pour les token n'est utile que pour le parsing
 typedef	struct	s_cmd //struture pour les commande chaque commande succesives est separee par un pipe.
 {
 	char	**cmds; //cmds[0] est la commandes et le reste jusqu'a cmds[n] == NULL sont des arguments pour la commande.
+	int		pid;
 	int		fd_in; //fd de redirection d'entree.
 	int		fd_out;	//fd de redirection de sortie.
 	char	*msg_error;//message d'erreur si non nul ne pas executer la commande et passer qu prochain pipe
 	t_cmd	*next;
+	char	*str;
 	t_cmd	*prev;
 }	t_cmd;	
 
@@ -67,16 +69,15 @@ typedef struct s_shell //struture pour minishell il sert a stocke et passer faci
 	int		stdout;//Duplication fd of the standard output
 	int		exit_status;// Value to change with the exit status of the executed pipe or command;
 	char	*pwd;//string where is store the path to the current directory.
-	char	*str;
 	t_token	*tokens;//utile que dans la partie parsing
 	t_cmd	*cmd;//pointeur vers la premiere commande.
 }	t_shell;
 
 //execution
 int	    	execution(t_shell *shell);
-int			check_path(char *path, t_shell *shell);
+int			check_path(char *path, t_cmd *cmd);
 char		*path_join(char *s1, char *s2);
-void		search_cmd(t_shell *shell, char *cmd);
+void		search_cmd(t_shell *shell, t_cmd *cmd, char *cmd_name);
 //initialization
 void		initialization_shell(t_shell *shell, char **ap);
 // utils
@@ -88,15 +89,15 @@ t_token		*ft_tokennew(enum e_types type, char *line);
 void		ft_token_add_back(t_token **atoken, t_token *new);
 t_token		*ft_tokenlast(t_token *token);
 // tokenizer
-int			tokenizer(t_shell *shell, char *line);
-int			tokenizer_text(t_shell *shell, int *ind, char *str);
+int			tokenizer(t_shell *shell, t_cmd *cmd, char *line);
+int			tokenizer_text(t_shell *shell, int *ind, char *str, t_cmd *cmd);
 char    	*ft_strjoin_part(char *s1, char *spart, int l);
 // expansion env
 char		*expand_exit_status(t_shell *shell, int *ind, char *l);
 char		*expand_var(t_shell *shell, int *ind, char *str, char *l);
 char		*expand_var_quote(t_shell *shell, int *ind, char *str, char *l);
 // parsing
-char		*parsing_tokenizer(t_shell *shell , char *line);
+char		*parsing_tokenizer(t_shell *shell, t_cmd *cmd, char *line);
 int 		check_syntax_error(t_shell *shell, int error);
 void		parsing(t_shell *shell);
 int			parsing_io_files(t_cmd *cmd, t_token *token);

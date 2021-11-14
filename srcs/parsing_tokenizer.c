@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_tokenizer.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adu-pavi <adu-pavi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/03 17:41:03 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/29 23:48:24 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/14 17:10:20 by adu-pavi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*parsing_tokenizer(t_shell *shell, char *line)
+char	*parsing_tokenizer(t_shell *shell, t_cmd *cmd, char *line)
 {
 	int	error;
 
-	shell->str = line;
-	error = tokenizer(shell, line);
+	cmd->str = line;
+	error = tokenizer(shell, cmd, line);
 	error = check_syntax_error(shell, error);
 	if (!error)
 		parsing(shell);
 	free(line);
-	shell->str = NULL;
+	cmd->str = NULL;
 	ft_tokenclear(&(shell->tokens));
-	t_cmd *cmd = shell->cmd;
+	cmd = shell->cmd;
 	printf("\nFonction dans le fichier parsing_tokenizer.c pour afficher les structures commandes\n");
 	printf("\nDEBUT\n\n");
 	while (cmd)

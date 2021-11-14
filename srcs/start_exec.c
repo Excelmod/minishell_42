@@ -6,7 +6,7 @@
 /*   By: adu-pavi <adu-pavi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 18:58:01 by adu-pavi          #+#    #+#             */
-/*   Updated: 2021/11/11 12:13:33 by adu-pavi         ###   ########.fr       */
+/*   Updated: 2021/11/14 17:46:33 by adu-pavi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ int exec_simple_command(t_shell *shell, t_cmd *cmd)
 	dup2(shell->stdout, 1);
 	if (ret != -1)
 		return (ret);
-	search_cmd(shell, cmd->cmds[0]);
-	if (shell->str)
+	search_cmd(shell, cmd, cmd->cmds[0]);
+	if (cmd->str)
 	{
 		pid = fork();
 		if (!pid)
 		{
-			if (execve(shell->str, cmd->cmds, shell->env) == -1)
+			if (execve(cmd->str, cmd->cmds, shell->env) == -1)
 			{
 				perror("minishell: ");
 				return (0);
@@ -61,11 +61,33 @@ int exec_simple_command(t_shell *shell, t_cmd *cmd)
 		else
 			waitpid(pid, &ret, 0);
 	}
-	free(shell->str);
-	shell->str = NULL;
+	free(cmd->str);
+	cmd->str = NULL;
 	return (ret);
 }
 
+void close_all_fd(t_shell *shell)
+{
+	t_cmd *cmd;
+
+	cmd = shell->cmd;
+	while (cmd)
+	{
+		wait(cmd->pid);
+		close(cmd->fd_in);
+		close(cmd->fd_out);
+		cmd = cmd->next;
+	}
+}
+
+/**
+ * @brielf 
+ * 
+ * @param shell 
+ * @param cmd 
+ * @param i : command number, allows 
+ * @return 0 unless trouble ()
+ */
 int	exec_multiple_cmd_1(t_shell *shell, t_cmd *cmd, int *i)
 {
 	int	pid;
@@ -78,11 +100,14 @@ int	exec_multiple_cmd_1(t_shell *shell, t_cmd *cmd, int *i)
 		pipe(shell->pipe_fd[*i]);
 		dup2(cmd->fd_out, shell->pipe_fd[*i][1]);
 		ret = check_builtin(shell, shell->cmd->cmds[0]);
-		search_cmd(shell, cmd->cmds[0]);
+		if (ret != -1)
+			return (ret);
+		search_cmd(shell, cmd, cmd->cmds[0]);
+		printf("running : %s\n", cmd->str);
 		pid = fork();
 		if (!pid)
 		{
-			if (execve(shell->str, cmd->cmds, shell->env) == -1)
+			if (execve(cmd->str, cmd->cmds, shell->env) == -1)
 			{
 				perror("minishell: ");
 				return (0);
@@ -90,10 +115,11 @@ int	exec_multiple_cmd_1(t_shell *shell, t_cmd *cmd, int *i)
 			else
 				waitpid(pid, &ret, 0);
 		}
-		waitpid(pid, &ret, 0);
+		cmd->PID_val = pid;
 		cmd = cmd->next;
 		i++;
 	}
+	close_all_fd(shell);
 	return (0);
 }
 
@@ -107,15 +133,17 @@ int	exec_multiple_cmd(t_shell *shell, t_cmd *cmd)
 	dup2(shell->cmd->fd_in, 0);
 	exec_multiple_cmd_1(shell, cmd, &i);
 	dup2(cmd->fd_in, shell->pipe_fd[i - 1][0]);
-	dup2(cmd->fd_out, 1);
+	dup2(cmd->fd_out, STDOUT_FILENO);
 	ret = check_builtin(shell, shell->cmd->cmds[0]);
+	write(STDOUT_FILENO, &(cmd->str), ft_strlen(cmd->str));
+	printf("running : %s\n", cmd->str);
 	if (ret != -1)
 		return (ret);
-	search_cmd(shell, cmd->cmds[0]);
+	search_cmd(shell, cmd, cmd->cmds[0]);
 	pid = fork();
 	if (!pid)
 	{
-		if (execve(shell->str, cmd->cmds, shell->env) == -1)
+		if (execve(cmd->str, cmd->cmds, shell->env) == -1)
 		{
 			perror("minishell: ");
 			return (0);
@@ -125,10 +153,10 @@ int	exec_multiple_cmd(t_shell *shell, t_cmd *cmd)
 	}
 	if (ret != -1)
 		return (ret);
-	dup2(shell->stdin, 0);
-	dup2(shell->stdout, 1);
-	free(shell->str);
-	shell->str = NULL;
+	dup2(shell->stdin, STDIN_FILENO);
+	dup2(shell->stdout, STDOUT_FILENO);
+	free(cmd->str);
+	cmd->str = NULL;
 	return (ret);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_text.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adu-pavi <adu-pavi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 00:46:44 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/22 21:30:54 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/14 17:22:10 by adu-pavi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ char	*wrap_strjoin_inc(char *str, int *i, int *ind, char *l)
 	return (l);
 }
 
-int	text_double(t_shell *shell, int *ind, int *i, char **l)
+int	text_double(t_shell *shell, int *ind, int *i, char **l, t_cmd *cmd)
 {
 	char	*str;
 
-	str = shell->str;
+	str = cmd->str;
 	*l = wrap_strjoin_inc(str, i, ind, *l);
 	while (str[*i] && str[*i] != '\"')
 	{
@@ -44,11 +44,11 @@ int	text_double(t_shell *shell, int *ind, int *i, char **l)
 	return (0);
 }
 
-int	text_simple(t_shell *shell, int *ind, int *i, char **l)
+int	text_simple(int *ind, int *i, char **l, t_cmd *cmd)
 {
 	char	*str;
 
-	str = shell->str;
+	str = cmd->str;
 	*l = wrap_strjoin_inc(str, i, ind, *l);
 	while (str[*i] != '\'' && str[*i] != 0)
 		(*i)++;
@@ -60,11 +60,11 @@ int	text_simple(t_shell *shell, int *ind, int *i, char **l)
 	return (0);
 }
 
-int	text_dollar(t_shell *shell, int *ind, int *i, char **l)
+int	text_dollar(t_shell *shell, int *ind, int *i, char **l, t_cmd *cmd)
 {
 	char	*str;
 
-	str = shell->str;
+	str = cmd->str;
 	if (ft_isset(" \t<>|", str[*i + 1]) || str[*i + 1] == 0)
 	{
 		(*i)++;
@@ -82,7 +82,7 @@ int	text_dollar(t_shell *shell, int *ind, int *i, char **l)
 	return (0);
 }
 
-int	tokenizer_text(t_shell *shell, int *ind, char *str)
+int	tokenizer_text(t_shell *shell, int *ind, char *str, t_cmd *cmd)
 {
 	int		i;
 	int		error;
@@ -94,11 +94,11 @@ int	tokenizer_text(t_shell *shell, int *ind, char *str)
 	while (str[i] && !(ft_isset(" <>|\t", str[i])))
 	{
 		if (str[i] == '\"')
-			error = text_double(shell, ind, &i, &l);
+			error = text_double(shell, ind, &i, &l, cmd);
 		else if (str[i] == '\'')
-			error = text_simple(shell, ind, &i, &l);
+			error = text_simple(ind, &i, &l, cmd);
 		else if (str[i] == '$')
-			error = text_dollar(shell, ind, &i, &l);
+			error = text_dollar(shell, ind, &i, &l, cmd);
 		else
 			i++;
 	}

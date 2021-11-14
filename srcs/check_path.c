@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adu-pavi <adu-pavi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 17:28:17 by user42            #+#    #+#             */
-/*   Updated: 2021/11/02 19:00:02 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/14 16:47:31 by adu-pavi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,15 @@ char	*path_join(char *s1, char *s2)
 	return (path);
 }
 
-int	check_path(char *path, t_shell *shell)
+int	check_path(char *path, t_cmd *cmd)
 {
 	char	*str;
 
-	str = path_join(path, shell->str);
+	str = path_join(path, cmd->str);
 	if (access(str, F_OK) == 0)
 	{
-		free(shell->str);
-		shell->str = ft_strdup(str);
+		free(cmd->str);
+		cmd->str = ft_strdup(str);
 		if (access(str, X_OK) == 0)
 		{
 			free(str);

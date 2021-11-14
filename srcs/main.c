@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adu-pavi <adu-pavi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/02 21:35:14 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/14 17:07:22 by adu-pavi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,12 @@
 
 void	loop(t_shell *shell)
 {
-	char 	*line;
+	t_cmd	*cmd;
+	t_cmd	*tmp;
+	int		i;
+	char	*line;
 
+	cmd = shell->cmd;
 	line = NULL;
 	line = readline("minishell$ ");
 	while(line != NULL)
@@ -23,12 +27,11 @@ void	loop(t_shell *shell)
 		if (line[0] == EOF) // ctrl D
 			return ;
 		add_history(line);
-		line = parsing_tokenizer(shell, line); // fonction regroupant toute les fonctions parsing et tokenization,  qui free line et retourne NULL,
+		line = parsing_tokenizer(shell, cmd, line); // fonction regroupant toute les fonctions parsing et tokenization,  qui free line et retourne NULL,
 		if (shell->cmd)
 			execution(shell);
-		int i = 0;
-		t_cmd	*cmd = shell->cmd;
-		t_cmd	*tmp = NULL;
+		i = 0;
+		tmp = NULL;
 		while(cmd)
 		{
 			free(cmd->msg_error);

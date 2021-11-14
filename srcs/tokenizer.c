@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adu-pavi <adu-pavi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 22:11:23 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/19 03:18:12 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/14 17:17:52 by adu-pavi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	tokenizer_redir_out(t_shell *shell, int *ind, char *str)
 	(*ind)++;
 }
 
-int	tokenizer(t_shell *shell, char *line)
+int	tokenizer(t_shell *shell, t_cmd *cmd, char *line)
 {
 	int	i;
 	int	error;
@@ -58,7 +58,7 @@ int	tokenizer(t_shell *shell, char *line)
 			tokenizer_redir_in(shell, &i, line);
 		else if (line[i])
 		{
-			error = tokenizer_text(shell, &i, line);
+			error = tokenizer_text(shell, &i, line, cmd);
 		}
 	}
 	return (error);

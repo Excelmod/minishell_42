@@ -13,7 +13,9 @@ SOURCES =  	srcs/check_path.c		srcs/get_next_line.c 		srcs/parsing.c 				srcs/ex
 			srcs/handle_heredoc.c	srcs/tokenizer_text.c		srcs/expand_var.c								\
 # Define objects for all sources
 OBJS = $(SOURCES:.c=.o)
-RL = -lreadline -L /Users/$(USER)/.brew/opt/readline/lib
+RL = -lreadline -L /usr/local/opt/share/readline/lib
+#RL = -Rocate 
+RL = -lreadline -L /Users/$(USER)/.brew/opt/readline/lib -I /Users/$(USER)/.brew/opt/readline/include
 		
 
 # Define headers files
