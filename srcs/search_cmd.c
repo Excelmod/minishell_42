@@ -32,7 +32,5 @@ int	search_cmd(t_shell *shell, char *cmd, char **path_cmd)
 		ft_putendl_fd(": Permission denied", 2);
 	else
 		ft_putendl_fd(": Command not found", 2);
-	free(*path_cmd);
-	*path_cmd = NULL;
-	return (0);
+	return (127);
 }

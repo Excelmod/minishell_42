@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 23:16:41 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/21 23:31:00 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/16 01:15:50 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int	builtin_cd(t_shell *shell, char **arg)
 			path = env_value(shell->env, "HOME");
 		if (chdir(path))
 		{
-			ft_putstr_fd("bash: cd: ", 2);
+			ft_putstr_fd("minishell: cd: ", 2);
 			perror(path);
 			free(path);
 			return (errno);

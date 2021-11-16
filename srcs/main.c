@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/14 14:58:19 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/16 00:36:57 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	loop(t_shell *shell)
 {
-	char 	*line;
+	char	*line;
 
 	line = NULL;
 	line = readline("minishell$ ");
-	while(line != NULL)
+	while (line != NULL)
 	{
 		add_history(line);
 		line = parsing_tokenizer(shell, line);
@@ -31,7 +31,6 @@ void	loop(t_shell *shell)
 		signal_input();
 		line = readline("minishell$ ");
 	}
-	
 }
 
 int	main(int ac, char **av, char **ap)
@@ -40,7 +39,7 @@ int	main(int ac, char **av, char **ap)
 
 	shell = NULL;
 	if (ac && av)
-	shell = malloc(sizeof(t_shell));
+		shell = malloc(sizeof(t_shell));
 	if (shell == NULL)
 	{
 		perror("shell");

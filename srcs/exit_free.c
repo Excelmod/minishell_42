@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:50:00 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/02 20:07:04 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/16 00:31:36 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,21 @@ void	free_cmd(t_cmd *cmd)
 	t_cmd	*tmp;
 
 	tmp = NULL;
-	while(cmd)
+	while (cmd)
 	{
 		free(cmd->msg_error);
 		i = 0;
-		while(cmd->cmds && cmd->cmds[i])
+		while (cmd->cmds && cmd->cmds[i])
 		{
 			free(cmd->cmds[i]);
 			i++;
 		}
 		free(cmd->cmds);
-		close(cmd->fd_in);
-		close(cmd->fd_out);
-		tmp  = cmd;
+		if (cmd->fd_in != -1)
+			close(cmd->fd_in);
+		if (cmd->fd_out != -1)
+			close(cmd->fd_out);
+		tmp = cmd;
 		cmd = cmd->next;
 		free(tmp);
 		tmp = NULL;
@@ -81,6 +83,8 @@ void	exit_free(t_shell *shell, int status)
 	shell->path = ft_freetabs(shell->path);
 	shell->env = ft_freetabs(shell->env);
 	shell->env = ft_freetabs(shell->exp);
+	free(shell->pipes);
+	free(shell->pid);
 	free(shell->pwd);
 	free(shell->str);
 	free(shell);
