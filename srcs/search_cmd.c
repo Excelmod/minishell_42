@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/22 00:44:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/13 02:20:10 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/16 23:40:11 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	search_cmd(t_shell *shell, char *cmd, char **path_cmd)
 
 	i = 0;
 	*path_cmd = NULL;
+	if (check_path("", cmd, path_cmd))
+		return (1);
 	if (check_path(".", cmd, path_cmd))
 		return (1);
 	while (shell->path[i])

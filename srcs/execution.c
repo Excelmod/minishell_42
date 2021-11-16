@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 17:06:37 by lchristo          #+#    #+#             */
-/*   Updated: 2021/11/16 01:08:12 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/16 23:59:50 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	execution(t_shell *shell)
 
 	cmd = shell->cmd;
 	shell->nb_cmds = 0;
-	while (cmd)
+	while (cmd && cmd->cmds)
 	{
 		shell->nb_cmds += 1;
 		cmd = cmd->next;

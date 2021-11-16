@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:50:00 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/16 00:31:36 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/17 00:16:11 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	exit_free(t_shell *shell, int status)
 	free_cmd(shell->cmd);
 	shell->path = ft_freetabs(shell->path);
 	shell->env = ft_freetabs(shell->env);
-	shell->env = ft_freetabs(shell->exp);
+	shell->exp = ft_freetabs(shell->exp);
 	free(shell->pipes);
 	free(shell->pid);
 	free(shell->pwd);

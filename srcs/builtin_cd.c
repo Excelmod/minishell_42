@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 23:16:41 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/16 01:15:50 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/16 23:34:07 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ void	update_pwd_env(t_shell *shell, char *path)
 	tab[1] = ft_strjoin("OLDPWD=", shell->pwd);
 	builtin_export(shell, tab);
 	free(tab[1]);
+	tab[1] = NULL;
 	free(shell->pwd);
+	shell->pwd = NULL;
 	shell->pwd = path;
 	tab[1] = ft_strjoin("PWD=", path);
 	builtin_export(shell, tab);
@@ -112,21 +114,24 @@ int	builtin_cd(t_shell *shell, char **arg)
 
 	if (arg && (arg[1] || search_env(shell->env, "HOME")))
 	{
+		if (arg[1] && arg[2])
+		{
+			ft_putendl_fd("minishell: cd: too many arguments", 2);
+			return (1);
+		}
 		if (arg[1])
 			path = path_cd(shell, arg);
 		else
 			path = env_value(shell->env, "HOME");
 		if (chdir(path))
 		{
-			ft_putstr_fd("minishell: cd: ", 2);
+			ft_putendl_fd("minishell: cd: ", 2);
 			perror(path);
 			free(path);
 			return (errno);
 		}
 		else
-		{
 			change_pwd(shell, path);
-		}
 	}
 	return (0);
 }
