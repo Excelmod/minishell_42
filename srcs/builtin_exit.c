@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 02:04:24 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/16 00:35:50 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/16 21:13:37 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,16 @@ int	exit_shell(t_shell *shell, char **av)
 {
 	int	status;
 
+	status = 0;
 	ft_putendl_fd("exit", 2);
 	if (av[1] == NULL)
 		status = shell->exit_status;
-	else if (av[1] && av[2])
+	else if (av[2])
 	{
 		ft_putendl_fd("bash: exit: too many arguments", 2);
 		return (1);
 	}
-	else if (av[1] && av[2] == NULL)
+	else if (av[2] == NULL)
 	{
 		status = check_exit_numeric_value(av[1]);
 	}

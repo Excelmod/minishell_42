@@ -23,8 +23,8 @@ CFLAGS = -Wall -Werror -Wextra
 HEADERS = -I include -I libft -I /Users/$(USER)/.brew/opt/readline/include
 
 # Name the compiler
-CC = gcc
-LEAKS = -fsanitize=address
+CC = clang
+LEAKS = -g3 -fsanitize=address
 
 
 all: libft.a $(NAME)
