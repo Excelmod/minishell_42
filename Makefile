@@ -11,7 +11,7 @@ SOURCES =  	srcs/check_path.c		srcs/get_next_line.c 		srcs/parsing.c 				srcs/ex
 			srcs/print_export.c		srcs/unset.c				srcs/initialization.c		srcs/append_env.c	\
 			srcs/execution.c		srcs/compare.c				srcs/parsing_io.c			srcs/builtin_exit.c	\
 			srcs/handle_heredoc.c	srcs/tokenizer_text.c		srcs/expand_var.c			srcs/signal.c		\
-			srcs/exec_multiple_cmd.c							srcs/exec_command_pipe.c						\
+			srcs/exec_multiple_cmd.c							srcs/exec_command_pipe.c	srcs/change_pwd.c	\
 			
 # Define objects for all sources
 OBJS = $(SOURCES:.c=.o)
@@ -36,7 +36,7 @@ libft.a :
 	cd libft && $(MAKE) && mv libft.a ../
 
 $(NAME): $(OBJS)
-	$(CC) $(LEAKS) -o $@ $(OBJS) libft.a $(RL)
+	$(CC) $(LEAKS) $(CFLAGS) -o $@ $(OBJS) libft.a $(RL)
 
 # Remove all objects, dependencies and executable files generated during the build
 clean:

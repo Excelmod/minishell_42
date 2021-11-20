@@ -6,11 +6,21 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/16 00:36:57 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/20 05:45:11 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	handle_path(t_shell *shell)
+{
+	char	*tmp;
+
+	shell->path = ft_freetabs(shell->path);
+	tmp = env_value(shell->env, "PATH");
+	shell->path = ft_split(tmp, ':');
+	free(tmp);
+}
 
 void	loop(t_shell *shell)
 {
@@ -22,6 +32,7 @@ void	loop(t_shell *shell)
 	{
 		add_history(line);
 		line = parsing_tokenizer(shell, line);
+		handle_path(shell);
 		if (shell->cmd)
 		{
 			execution(shell);
@@ -47,6 +58,7 @@ int	main(int ac, char **av, char **ap)
 	}
 	initialization_shell(shell, ap);
 	loop(shell);
+	ft_putendl_fd("exit", 2);
 	exit_free(shell, 0);
 	return (0);
 }

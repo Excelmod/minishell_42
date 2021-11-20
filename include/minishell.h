@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/16 01:25:06 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/20 05:26:40 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ int			builtin_unset(t_shell *shell, char **args);
 char		**delete_env(char **ap, char *str);
 // cd
 int			builtin_cd(t_shell *shell, char **arg);
+void		change_pwd(t_shell *shell, char *path);
 char		*cur_dir_name(void);
 //pwd
 int			builtin_pwd(t_shell *shell);

@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 02:04:24 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/16 21:13:37 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/20 00:55:15 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int	exit_shell(t_shell *shell, char **av)
 	int	status;
 
 	status = 0;
-	ft_putendl_fd("exit", 2);
 	if (av[1] == NULL)
 		status = shell->exit_status;
 	else if (av[2])
@@ -75,6 +74,7 @@ int	exit_shell(t_shell *shell, char **av)
 	{
 		status = check_exit_numeric_value(av[1]);
 	}
+	ft_putendl_fd("exit", 2);
 	exit_free(shell, status);
 	return (status);
 }
