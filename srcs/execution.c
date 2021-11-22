@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 17:06:37 by lchristo          #+#    #+#             */
-/*   Updated: 2021/11/20 01:10:23 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/22 12:38:26 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	simple_command(t_shell *shell, t_cmd *cmd, int ret)
 			{
 				if (execve(path_cmd, cmd->cmds, shell->env) == -1)
 				{
-					perror("minishell: ");
+					message_error_minishell(cmd->cmds[0], strerror(errno));
 					exit(errno);
 				}
 			}

@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/21 17:28:17 by user42            #+#    #+#             */
-/*   Updated: 2021/11/20 02:36:33 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/22 12:03:04 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	check_path(char *path, char	*cmd, char **path_cmd)
 		str = ft_strdup(cmd);
 	if (access(str, F_OK) == 0)
 	{	
+		free(*path_cmd);
 		*path_cmd = ft_strdup(str);
 		if (access(str, X_OK) == 0)
 		{

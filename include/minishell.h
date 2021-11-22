@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/20 05:26:40 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/22 12:41:57 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ void		free_cmd(t_cmd *cmd);
 void		ft_tokenclear(t_token **lst);
 void		exit_free(t_shell *shell, int status);
 void		message_error(char *msg);
+void		message_error_minishell(char *cmd, char *error);
 // echo
 int			builtin_echo(char **args);
 // env
