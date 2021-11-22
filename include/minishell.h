@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/22 12:41:57 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/22 18:12:06 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,4 +147,5 @@ int			builtin_pwd(t_shell *shell);
 void		signal_input(void);
 void		signal_process(void);
 void		signal_ignore(void);
+
 #endif

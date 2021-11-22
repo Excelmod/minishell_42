@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 02:04:24 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/20 00:55:15 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/22 18:17:35 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	exit_pipe(t_shell *shell, char **av)
 {
 	int	status;
 
+	status = 0;
 	if (av[1] == NULL)
 		status = shell->exit_status;
 	else if (av[1] && av[2])

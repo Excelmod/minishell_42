@@ -23,20 +23,20 @@ CFLAGS = -Wall -Werror -Wextra
 HEADERS = -I include -I libft -I /Users/$(USER)/.brew/opt/readline/include
 
 # Name the compiler
-CC = gcc
+CC = clang
 LEAKS = -g3 -fsanitize=address
 
 
 all: libft.a $(NAME)
 
 %.o : %.c
-	gcc -c $(CFLAGS) $(HEADERS) $< -o $@ 
+	$(CC) -c $(CFLAGS) $(HEADERS) $< -o $@ 
 
 libft.a :
 	cd libft && $(MAKE) && mv libft.a ../
 
 $(NAME): $(OBJS)
-	$(CC) $(LEAKS) $(CFLAGS) -o $@ $(OBJS) libft.a $(RL)
+	$(CC) -o $@ $(OBJS) libft.a $(RL)
 
 # Remove all objects, dependencies and executable files generated during the build
 clean:

@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 23:52:07 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/19 03:08:51 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/22 18:16:55 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ t_list	*get_heredoc_lines(char *cmp)
 	lst = NULL;
 	line = NULL;
 	l = ft_strlen(cmp);
-	handle_prompt_heredoc();
-	while (get_next_line(0, &line))
+	line = readline("> ");
+	while (line)
 	{
 		if (ft_strncmp(line, cmp, l + 1) == 0)
 		{
@@ -46,7 +46,7 @@ t_list	*get_heredoc_lines(char *cmp)
 			return (lst);
 		}
 		ft_lstadd_back(&lst, ft_lstnew((void *)line));
-		handle_prompt_heredoc();
+		line = readline("> ");
 	}
 	if (line && *line)
 		ft_lstadd_back(&lst, ft_lstnew((void *)line));
