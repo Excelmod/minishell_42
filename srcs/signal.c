@@ -27,17 +27,6 @@ void	interrupt_process(int signal)
 	write(1, "\n", 1);
 }
 
-void	interrupt_heredoc(int signal)
-{
-	(void)signal;
-}
-
-void	signal_heredoc(void)
-{
-	signal(SIGINT, interrupt_heredoc);
-	signal(SIGQUIT, interrupt_heredoc);
-}
-
 void	quit_process(int signal)
 {
 	(void)signal;

@@ -146,5 +146,4 @@ int			builtin_pwd(t_shell *shell);
 void		signal_input(void);
 void		signal_process(void);
 void		signal_ignore(void);
-void		signal_heredoc(void);
 #endif

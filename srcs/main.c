@@ -22,6 +22,12 @@ void	handle_path(t_shell *shell)
 	free(tmp);
 }
 
+void	signal_ignore(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
 void	loop(t_shell *shell)
 {
 	char	*line;
@@ -30,7 +36,7 @@ void	loop(t_shell *shell)
 	line = readline("minishell$ ");
 	while (line != NULL)
 	{
-		signal_heredoc();
+		signal_ignore();
 		add_history(line);
 		line = parsing_tokenizer(shell, line);
 		handle_path(shell);
