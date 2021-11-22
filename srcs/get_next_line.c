@@ -16,16 +16,24 @@ int	get_next_line(int fd, char **line)
 {
 	static char	buf;
 	char		*swap;
+	int			r;
 
 	*line = malloc(sizeof(**line));
 	**line = 0;
-	while (read(fd, &buf, 1) > 0)
+	r = read(fd, &buf, 1);
+	if (r == 0)
+		return (0);
+	while (1)
 	{
-		if (buf == '\n')
-			return (1);
-		swap = ft_stradd(*line, buf);
-		free(*line);
-		*line = swap;
+		if (r)
+		{
+			if (buf == '\n')
+				return (1);
+			swap = ft_stradd(*line, buf);
+			free(*line);
+			*line = swap;
+		}
+		r = read(fd, &buf, 1);
 	}
 	return (0);
 }

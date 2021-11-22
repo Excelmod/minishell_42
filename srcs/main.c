@@ -30,6 +30,7 @@ void	loop(t_shell *shell)
 	line = readline("minishell$ ");
 	while (line != NULL)
 	{
+		signal_heredoc();
 		add_history(line);
 		line = parsing_tokenizer(shell, line);
 		handle_path(shell);

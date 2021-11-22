@@ -18,6 +18,16 @@ void	del_str(void *content)
 	content = NULL;
 }
 
+void	heredoc_eof(char *line, char *cmp, t_list *lst)
+{
+	int	i;
+
+	i = ft_lstsize(lst);
+	printf("bash: warning: here-document at line %d", i);
+	printf(" delimited by end-of-file (wanted `%s')\n", cmp);
+	free(line);
+}
+
 t_list	*get_heredoc_lines(char *cmp)
 {
 	char	*line;
@@ -33,11 +43,15 @@ t_list	*get_heredoc_lines(char *cmp)
 		if (ft_strncmp(line, cmp, l + 1) == 0)
 		{
 			free(line);
-			break ;
+			return (lst);
 		}
 		ft_lstadd_back(&lst, ft_lstnew((void *)line));
 		handle_prompt_heredoc();
 	}
+	if (line && *line)
+		ft_lstadd_back(&lst, ft_lstnew((void *)line));
+	else
+		heredoc_eof(line, cmp, lst);
 	return (lst);
 }
 
