@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 22:47:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/20 05:43:07 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/24 18:22:31 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,4 +121,5 @@ void	initialization_shell(t_shell *shell, char **ap)
 	initialization_pwd(shell);
 	initialization_shlvl(shell);
 	shell->exit_status = 0;
+	shell->nbline = 0;
 }

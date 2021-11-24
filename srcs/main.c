@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/24 18:08:51 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/24 18:30:38 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	loop(t_shell *shell)
 	while (line != NULL)
 	{
 		g_signal = 0;
+		shell->nbline += 1;
 		signal_ignore();
 		add_history(line);
 		line = parsing_tokenizer(shell, line);

@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 23:52:07 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/24 18:04:39 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/24 18:35:50 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@ void	del_str(void *content)
 	content = NULL;
 }
 
-void	heredoc_eof(char *line, char *cmp, t_list *lst)
+void	heredoc_eof(t_shell *shell, char *line, char *cmp)
 {
 	int	i;
 
-	i = ft_lstsize(lst);
+	i = shell->nbline;
 	printf("bash: warning: here-document at line %d", i);
 	printf(" delimited by end-of-file (wanted `%s')\n", cmp);
 	free(line);
 }
 
-t_list	*get_heredoc_lines(char *cmp)
+t_list	*get_heredoc_lines(t_shell *shell, char *cmp)
 {
 	char	*line;
 	t_list	*lst;
@@ -53,7 +53,7 @@ t_list	*get_heredoc_lines(char *cmp)
 	else if (line && *line)
 		ft_lstadd_back(&lst, ft_lstnew((void *)line));
 	else
-		heredoc_eof(line, cmp, lst);
+		heredoc_eof(shell, line, cmp);
 	return (lst);
 }
 
@@ -85,7 +85,8 @@ void	handle_error_heredoc(t_shell *shell, int count)
 	{
 		if (token->type == HEREDOC)
 		{
-			list = get_heredoc_lines(token->next->line);
+			list = get_heredoc_lines(shell, token->next->line);
+			shell->nbline += ft_lstsize(list);
 			write_heredoc(list, token);
 			ft_lstclear(&list, del_str);
 			count--;

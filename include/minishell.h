@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/24 18:07:03 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/24 18:22:03 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_shell
 	char	**path;
 	int		stdin;
 	int		stdout;
+	int		nbline;
 	int		exit_status;
 	char	*pwd;
 	char	*str;
