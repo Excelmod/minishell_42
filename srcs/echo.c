@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/30 00:55:27 by ljulien           #+#    #+#             */
-/*   Updated: 2021/10/18 23:24:41 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/16 23:55:29 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	builtin_echo(char **args)
 
 	i = 1;
 	option = 0;
-	if (args[1] && ft_strncmp(args[1], "-n", 2) == 0)
+	while (args[i] && ft_strncmp(args[i], "-n", 2) == 0)
 	{
 		option = 1;
 		i++;

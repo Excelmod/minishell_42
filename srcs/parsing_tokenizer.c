@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/03 17:41:03 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/14 15:04:27 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/22 13:56:18 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,32 +19,10 @@ char	*parsing_tokenizer(t_shell *shell, char *line)
 	shell->str = line;
 	error = tokenizer(shell, line);
 	error = check_syntax_error(shell, error);
-	if (!error)
+	if (!g_signal && !error)
 		parsing(shell);
 	free(line);
 	shell->str = NULL;
 	ft_tokenclear(&(shell->tokens));
-	/*t_cmd *cmd = shell->cmd;
-	printf("\nFonction dans le fichier parsing_tokenizer.c pour afficher les structures commandes\n");
-	printf("\nDEBUT\n\n");
-	while (cmd)
-	{
-		int i = 0;
-		printf("Nouvelle CMD:\n");
-		while(cmd->cmds && cmd->cmds[i])
-		{
-			printf("cmd%d: '%s'\n", i+1, cmd->cmds[i]);
-			i++;
-		}
-		printf("\nmsg_error: '%s'\n", cmd->msg_error);
-		printf("fd_in: %d\nfd_out: %d\n", cmd->fd_in, cmd->fd_out);
-		cmd = cmd->next;
-		if (cmd)
-			printf("\nPIPE\n\n");
-	}
-	printf("\nFIN\n\n");*/
-	ft_putendl_fd("shell->cmd->msg_error/n", 1);
-	ft_putendl_fd(shell->cmd->msg_error, 1);
-	ft_putendl_fd("shell->cmd->msg_error/n", 1);
 	return (NULL);
 }

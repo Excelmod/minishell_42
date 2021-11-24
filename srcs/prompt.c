@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 16:24:41 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/02 21:27:02 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/24 18:06:06 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,4 @@ char	*cur_dir_name(void)
 		buf = malloc(sizeof(char) * size);
 	}
 	return (buf);
-}
-
-void	handle_prompt_heredoc(void)
-{
-	write(1, "> ", 2);
 }

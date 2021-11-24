@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 22:47:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/02 21:36:43 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/20 05:43:07 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*check_path_pwd(char *path)
 		return (cur);
 	}
 	new = cur_dir_name();
-	if (strncmp(new, cur, ft_strlen(new)) != 0)
+	if (ft_strncmp(new, cur, ft_strlen(new)) != 0)
 	{
 		free(new);
 		free(path);
@@ -102,10 +102,6 @@ void	initialization_pwd(t_shell *shell)
 	tab[1] = ft_strjoin("PWD=", str);
 	tab[2] = NULL;
 	builtin_export(shell, tab);
-	free(tab[1]);
-	tab[1] = ft_strdup("OLDPWD");
-	builtin_unset(shell, tab);
-	builtin_export(shell, tab);
 	ft_freetabs(tab);
 }
 
@@ -115,16 +111,14 @@ void	initialization_shell(t_shell *shell, char **ap)
 	shell->exp = NULL;
 	shell->tokens = NULL;
 	shell->cmd = NULL;
-	shell->path = ft_split(search_env(shell->env, "PATH") + 5, ':');
+	shell->pipes = NULL;
+	shell->pid = NULL;
+	shell->str = NULL;
+	shell->path = NULL;
 	shell->stdin = dup(0);
 	shell->stdout = dup(1);
 	signal_input();
 	initialization_pwd(shell);
 	initialization_shlvl(shell);
 	shell->exit_status = 0;
-	if (!(shell->path))
-	{
-		perror("shell");
-		exit(0);
-	}
 }

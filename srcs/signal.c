@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 21:20:06 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/02 21:21:34 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/22 13:30:19 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,4 @@ void	signal_process(void)
 {
 	signal(SIGINT, interrupt_process);
 	signal(SIGQUIT, quit_process);
-}
-
-void	signal_ignore(void)
-{
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
 }

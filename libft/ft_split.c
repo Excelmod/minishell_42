@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:52:00 by ljulien           #+#    #+#             */
-/*   Updated: 2021/08/22 01:30:39 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/20 05:29:21 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ char	**ft_split(char const *s, char c)
 	int		ns;
 	int		cut;
 
+	if (!s)
+		return (NULL);
 	ns = size_tab(s, c);
 	t = malloc(sizeof(char *) * (ns + 1));
 	if (!t)
