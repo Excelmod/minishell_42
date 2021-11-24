@@ -29,6 +29,8 @@ LEAKS = -g3 -fsanitize=address
 
 all: libft.a $(NAME)
 
+leaks: libft.a $(OBJS)
+	$(CC) $(LEAKS) $(CFLAGS) -o $@ $(OBJS) libft.a $(RL)
 %.o : %.c
 	$(CC) -c $(CFLAGS) $(HEADERS) $< -o $@ 
 
