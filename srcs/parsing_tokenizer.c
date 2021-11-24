@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/03 17:41:03 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/22 18:16:50 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/22 13:56:18 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*parsing_tokenizer(t_shell *shell, char *line)
 	shell->str = line;
 	error = tokenizer(shell, line);
 	error = check_syntax_error(shell, error);
-	if (!error)
+	if (!g_signal && !error)
 		parsing(shell);
 	free(line);
 	shell->str = NULL;

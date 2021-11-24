@@ -6,7 +6,7 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:33:30 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/22 18:12:06 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/24 18:22:03 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ enum e_types
 	INPUT,
 	PIPE,
 };
+
+extern int				g_signal;
 
 typedef struct s_token	t_token;
 typedef struct s_cmd	t_cmd;
@@ -71,6 +73,7 @@ typedef struct s_shell
 	char	**path;
 	int		stdin;
 	int		stdout;
+	int		nbline;
 	int		exit_status;
 	char	*pwd;
 	char	*str;
@@ -147,5 +150,4 @@ int			builtin_pwd(t_shell *shell);
 void		signal_input(void);
 void		signal_process(void);
 void		signal_ignore(void);
-
 #endif

@@ -6,11 +6,13 @@
 /*   By: ljulien <ljulien@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 19:35:42 by ljulien           #+#    #+#             */
-/*   Updated: 2021/11/22 18:18:41 by ljulien          ###   ########.fr       */
+/*   Updated: 2021/11/24 18:30:38 by ljulien          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int		g_signal;
 
 void	handle_path(t_shell *shell)
 {
@@ -22,9 +24,17 @@ void	handle_path(t_shell *shell)
 	free(tmp);
 }
 
+void	interrupt_heredoc(int signal)
+{
+	(void)signal;
+	g_signal = 1;
+	write(1, "\n", 1);
+	close(0);
+}
+
 void	signal_ignore(void)
 {
-	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, interrupt_heredoc);
 	signal(SIGQUIT, SIG_IGN);
 }
 
@@ -36,6 +46,8 @@ void	loop(t_shell *shell)
 	line = readline("minishell$ ");
 	while (line != NULL)
 	{
+		g_signal = 0;
+		shell->nbline += 1;
 		signal_ignore();
 		add_history(line);
 		line = parsing_tokenizer(shell, line);

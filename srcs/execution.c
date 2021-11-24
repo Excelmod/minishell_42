@@ -34,6 +34,17 @@ int	check_builtin_simple(t_shell *shell, char *str)
 	return (i);
 }
 
+void	simple_command_fork(t_shell *shell, t_cmd *cmd, char *path_cmd)
+{
+	close(shell->stdin);
+	close(shell->stdout);
+	if (execve(path_cmd, cmd->cmds, shell->env) == -1)
+	{
+		message_error_minishell(cmd->cmds[0], strerror(errno));
+		exit(errno);
+	}
+}
+
 int	simple_command(t_shell *shell, t_cmd *cmd, int ret)
 {
 	char	*path_cmd;
@@ -46,11 +57,7 @@ int	simple_command(t_shell *shell, t_cmd *cmd, int ret)
 		{
 			if (fork() == 0)
 			{
-				if (execve(path_cmd, cmd->cmds, shell->env) == -1)
-				{
-					message_error_minishell(cmd->cmds[0], strerror(errno));
-					exit(errno);
-				}
+				simple_command_fork(shell, cmd, path_cmd);
 			}
 			else
 			{

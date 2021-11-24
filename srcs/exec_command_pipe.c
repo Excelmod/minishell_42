@@ -49,6 +49,8 @@ void	clean_pipe_fd(t_shell *shell)
 	}
 	free(shell->pipes);
 	free(shell->pid);
+	close(shell->stdin);
+	close(shell->stdout);
 	shell->pid = NULL;
 	shell->pipes = NULL;
 	while (cmd)

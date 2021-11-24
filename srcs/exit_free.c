@@ -87,12 +87,12 @@ void	exit_free(t_shell *shell, int status)
 	free(shell->pid);
 	free(shell->pwd);
 	free(shell->str);
+	close(shell->stdin);
+	close(shell->stdout);
+	close(2);
+	close(1);
+	close(0);
 	free(shell);
 	rl_clear_history();
 	exit(status);
-}
-
-void	message_error(char *msg)
-{
-	ft_putendl_fd(msg, 2);
 }
