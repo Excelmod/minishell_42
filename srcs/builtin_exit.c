@@ -43,6 +43,7 @@ int	exit_pipe(t_shell *shell, char **av)
 {
 	int	status;
 
+	status = 0;
 	if (av[1] == NULL)
 		status = shell->exit_status;
 	else if (av[1] && av[2])
