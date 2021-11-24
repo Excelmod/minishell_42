@@ -27,3 +27,8 @@ char	*cur_dir_name(void)
 	}
 	return (buf);
 }
+
+void	message_error(char *msg)
+{
+	ft_putendl_fd(msg, 2);
+}

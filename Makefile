@@ -24,13 +24,12 @@ HEADERS = -I include -I libft -I /Users/$(USER)/.brew/opt/readline/include
 
 # Name the compiler
 CC = clang
-LEAKS = -g3 -fsanitize=address
-
 
 all: libft.a $(NAME)
 
-leaks: libft.a $(OBJS)
-	$(CC) $(LEAKS) $(CFLAGS) -o $@ $(OBJS) libft.a $(RL)
+#leaks: all
+#	valgrind --suppressions=liberror --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes ./$(NAME)
+
 %.o : %.c
 	$(CC) -c $(CFLAGS) $(HEADERS) $< -o $@ 
 
